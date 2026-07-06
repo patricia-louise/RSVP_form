@@ -7,7 +7,7 @@
 ****************************************************************/
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbz5rNRi72JPB9YWSWVeIV-jywbtsb2gop9AK1dNNBJ-Ew27cMslbtgitb545tRSGElc/exec";
+"https://script.google.com/macros/s/AKfycbxD5W9UG4MDLa7IjUQOqtOjCSN9_5YYVlgrIMsctZ2f6wvbyCzN_pJAcF-Q_wVU-LrG/exec";
 
 /***************************************************************
  ELEMENTS
@@ -389,5 +389,375 @@ document.addEventListener("click",(event)=>{
         autocomplete.classList.add("hidden");
 
     }
+
+});
+
+/***************************************************************
+ ATTENDANCE
+****************************************************************/
+
+attendanceButtons.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        clearButtons(attendanceButtons);
+
+        activateButton(button);
+
+        attendanceInput.value = button.dataset.value;
+
+        if(button.dataset.value==="Joyfully Accept"){
+
+            showAcceptFields();
+
+            hideDecline();
+
+        }
+
+        else{
+
+            hideAcceptFields();
+
+            showDecline();
+
+            parkingInput.value="";
+
+            clearButtons(parkingButtons);
+
+        }
+
+    });
+
+});
+
+/***************************************************************
+ PARKING
+****************************************************************/
+
+parkingButtons.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        clearButtons(parkingButtons);
+
+        activateButton(button);
+
+        parkingInput.value = button.dataset.value;
+
+    });
+
+});
+
+/***************************************************************
+ VALIDATION
+****************************************************************/
+
+function validateForm(){
+
+    if(nameInput.value.trim()===""){
+
+        showError("Please enter your name.");
+
+        return false;
+
+    }
+
+    if(emailInput.value.trim()===""){
+
+        showError("Please enter your email address.");
+
+        return false;
+
+    }
+
+    if(attendanceInput.value===""){
+
+        showError("Please select whether you'll be attending.");
+
+        return false;
+
+    }
+
+    if(attendanceInput.value==="Joyfully Accept"){
+
+        if(dietInput.value.trim()===""){
+
+            showError(
+
+            "Please tell us your dietary restrictions. If you have none, simply type 'None'."
+
+            );
+
+            return false;
+
+        }
+
+        if(parkingInput.value===""){
+
+            showError(
+
+            "Please let us know whether you'll need parking."
+
+            );
+
+            return false;
+
+        }
+
+    }
+
+    return true;
+
+}
+
+/***************************************************************
+ SIMPLE ERROR MESSAGE
+****************************************************************/
+
+function showError(message){
+
+    alert(message);
+
+}
+
+/***************************************************************
+ RESET FORM
+****************************************************************/
+
+function resetForm(){
+
+    form.reset();
+
+    attendanceInput.value="";
+
+    parkingInput.value="";
+
+    clearButtons(attendanceButtons);
+
+    clearButtons(parkingButtons);
+
+    hideAcceptFields();
+
+    hideDecline();
+
+    autocomplete.classList.add("hidden");
+
+}
+
+/***************************************************************
+ SHOW SUCCESS
+****************************************************************/
+
+function showSuccess(attendance){
+
+    form.style.display="none";
+
+    successScreen.classList.remove("hidden");
+
+    if(attendance==="Joyfully Accept"){
+
+        successText.innerHTML =
+
+        "We're absolutely thrilled you'll be celebrating with us! ❤️<br><br>We can't wait to celebrate with you on our special day.";
+
+    }
+
+    else{
+
+        successText.innerHTML =
+
+        "Thank you so much for letting us know. We'll truly miss celebrating with you, but we sincerely appreciate your response and your well wishes. ❤️";
+
+    }
+
+}
+
+/***************************************************************
+ SHOW VERIFICATION
+****************************************************************/
+
+function showVerification(){
+
+    form.style.display="none";
+
+    verificationScreen.classList.remove("hidden");
+
+}
+
+/***************************************************************
+ SUBMIT RSVP
+****************************************************************/
+
+form.addEventListener("submit", async (event)=>{
+
+    event.preventDefault();
+
+    if(!pageReady){
+
+        showError("Please wait a moment while the page finishes loading.");
+
+        return;
+
+    }
+
+    if(!validateForm()) return;
+
+    submitButton.disabled = true;
+
+    loadingOverlay.classList.remove("hidden");
+
+    const payload={
+
+        name:nameInput.value.trim(),
+
+        email:emailInput.value.trim(),
+
+        attendance:attendanceInput.value,
+
+        allergies:dietInput.value.trim(),
+
+        parking:parkingInput.value,
+
+        song:songInput.value.trim(),
+
+        message:messageInput.value.trim()
+
+    };
+
+    try{
+
+        const response = await fetch(
+
+            SCRIPT_URL,
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json"
+
+                },
+
+                body:JSON.stringify(payload)
+
+            }
+
+        );
+
+        if(!response.ok){
+
+            throw new Error(
+
+                "HTTP " + response.status
+
+            );
+
+        }
+
+        const text = await response.text();
+
+        console.log("Apps Script Response:", text);
+
+        let result;
+
+        try{
+
+            result = JSON.parse(text);
+
+        }
+
+        catch(error){
+
+            throw new Error(
+
+                "Apps Script returned invalid JSON.\n\n"
+
+                + text
+
+            );
+
+        }
+
+        loadingOverlay.classList.add("hidden");
+
+        submitButton.disabled=false;
+
+        if(!result.success){
+
+            throw new Error(
+
+                result.error ||
+
+                "Unknown Apps Script error."
+
+            );
+
+        }
+
+        if(result.status==="verified"){
+
+            showSuccess(payload.attendance);
+
+        }
+
+        else{
+
+            showVerification();
+
+        }
+
+    }
+
+    catch(error){
+
+        loadingOverlay.classList.add("hidden");
+
+        submitButton.disabled=false;
+
+        console.error(error);
+
+        showError(
+
+            "Unable to submit your RSVP.\n\n"
+
+            + error.message +
+
+            "\n\n(Open F12 → Console if you're testing.)"
+
+        );
+
+    }
+
+});
+
+/***************************************************************
+ PREVENT ENTER SUBMIT
+****************************************************************/
+
+document
+
+.querySelectorAll("input")
+
+.forEach(input=>{
+
+    input.addEventListener("keydown",(event)=>{
+
+        if(
+
+            event.key==="Enter"
+
+            &&
+
+            input.id!=="name"
+
+        ){
+
+            event.preventDefault();
+
+        }
+
+    });
 
 });
