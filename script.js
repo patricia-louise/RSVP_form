@@ -7,7 +7,7 @@
  CONFIGURATION
 ****************************************************************/
 
-const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-pMd8LCJQAQV_4ofv2SdKybBEF0OmbhO7r53qvBhjG14UIWkKJoLTFj93dsDr-l4/exec";
 
 /***************************************************************
  ELEMENTS
