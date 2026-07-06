@@ -1,13 +1,17 @@
-// =====================================================
-// CONFIGURATION
-// =====================================================
+/*****************************************************************
+ Wedding RSVP v3.0
+ By ChatGPT ❤️
+******************************************************************/
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-6EiI1w48lp3axXYGnnQVp1NcA2IvF66-0aDlE71bfgF7m4_bXD7npnKdScatE61G/exec";
+/***************************************************************
+ CONFIGURATION
+****************************************************************/
 
+const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
 
-// =====================================================
-// ELEMENTS
-// =====================================================
+/***************************************************************
+ ELEMENTS
+****************************************************************/
 
 const form = document.getElementById("rsvpForm");
 
@@ -17,120 +21,322 @@ const parkingInput = document.getElementById("parking");
 const acceptFields = document.getElementById("acceptFields");
 const declineMessage = document.getElementById("declineMessage");
 
-const attendanceButtons = document.querySelectorAll(".attendance-btn");
-const parkingButtons = document.querySelectorAll(".parking-btn");
+const submitButton = document.getElementById("submitButton");
 
 const loadingOverlay = document.getElementById("loadingOverlay");
 
 const successScreen = document.getElementById("successScreen");
+
+const verificationScreen = document.getElementById("verificationScreen");
+
 const successText = document.getElementById("successText");
 
-const submitButton = document.getElementById("submitButton");
+const autocomplete = document.getElementById("autocomplete");
 
-const dietField = document.getElementById("diet");
-const songField = document.getElementById("song");
-const messageField = document.getElementById("message");
+const nameInput = document.getElementById("name");
 
+const dietInput = document.getElementById("diet");
 
-// =====================================================
-// INITIAL STATE
-// =====================================================
+const parkingButtons =
+document.querySelectorAll(".parking");
 
-acceptFields.classList.add("hidden");
-declineMessage.classList.add("hidden");
+const attendanceButtons =
+document.querySelectorAll(".attendance");
 
+/***************************************************************
+ STATE
+****************************************************************/
 
-// =====================================================
-// HELPER FUNCTIONS
-// =====================================================
+let guestSuggestions = [];
 
-function clearButtonGroup(buttons){
+let selectedSuggestion = -1;
 
-    buttons.forEach(btn=>{
+let guestVerified = false;
 
-        btn.classList.remove("active");
+acceptFields.style.display = "none";
+declineMessage.style.display = "none";
+
+/***************************************************************
+ BUTTON HELPERS
+****************************************************************/
+
+function clearButtons(buttons){
+
+    buttons.forEach(button=>{
+
+        button.classList.remove("active");
 
     });
 
 }
 
+function activateButton(button){
 
-function showAcceptFields(){
-
-    acceptFields.classList.remove("hidden");
-
-    declineMessage.classList.add("hidden");
+    button.classList.add("active");
 
 }
 
+function hideAcceptFields(){
 
-function showDeclineMessage(){
+    acceptFields.style.display="none";
 
-    acceptFields.classList.add("hidden");
+}
+
+function showAcceptFields(){
+
+    acceptFields.style.display="block";
+
+}
+
+function showDecline(){
 
     declineMessage.classList.remove("hidden");
 
 }
 
+function hideDecline(){
 
-// =====================================================
-// ATTENDANCE BUTTONS
-// =====================================================
+    declineMessage.classList.add("hidden");
+
+}
+
+/***************************************************************
+ ATTENDANCE
+****************************************************************/
 
 attendanceButtons.forEach(button=>{
 
-    button.addEventListener("click",()=>{
+button.addEventListener("click",()=>{
 
-        clearButtonGroup(attendanceButtons);
+clearButtons(attendanceButtons);
 
-        button.classList.add("active");
+activateButton(button);
 
-        attendanceInput.value = button.dataset.value;
+attendanceInput.value =
+button.dataset.value;
 
-        if(button.dataset.value === "Joyfully Accept"){
+if(button.dataset.value==="Joyfully Accept"){
 
-            showAcceptFields();
+showAcceptFields();
 
-        }else{
+hideDecline();
 
-            showDeclineMessage();
+}else{
 
-            parkingInput.value = "";
-            clearButtonGroup(parkingButtons);
+hideAcceptFields();
 
-        }
+showDecline();
 
-    });
+parkingInput.value="";
+
+clearButtons(parkingButtons);
+
+}
 
 });
 
+});
 
-// =====================================================
-// PARKING BUTTONS
-// =====================================================
+/***************************************************************
+ PARKING
+****************************************************************/
 
 parkingButtons.forEach(button=>{
 
-    button.addEventListener("click",()=>{
+button.addEventListener("click",()=>{
 
-        clearButtonGroup(parkingButtons);
+clearButtons(parkingButtons);
 
-        button.classList.add("active");
+activateButton(button);
 
-        parkingInput.value = button.dataset.value;
-
-    });
+parkingInput.value=
+button.dataset.value;
 
 });
 
+});
 
-// =====================================================
-// VALIDATION
-// =====================================================
+/***************************************************************
+ LOAD GUEST SUGGESTIONS
+****************************************************************/
+
+async function fetchGuestSuggestions(query){
+
+try{
+
+const response = await fetch(
+
+SCRIPT_URL +
+"?action=guests&q=" +
+encodeURIComponent(query)
+
+);
+
+const data = await response.json();
+
+guestSuggestions = data;
+
+drawSuggestions();
+
+}
+
+catch(error){
+
+console.error(error);
+
+}
+
+}
+
+/*****************************************************************
+ DRAW AUTOCOMPLETE
+******************************************************************/
+
+function drawSuggestions(){
+
+    autocomplete.innerHTML = "";
+
+    selectedSuggestion = -1;
+
+    if(guestSuggestions.length===0){
+
+        autocomplete.classList.add("hidden");
+
+        return;
+
+    }
+
+    guestSuggestions.forEach((guest,index)=>{
+
+        const item = document.createElement("div");
+
+        item.className = "autocomplete-item";
+
+        item.innerHTML = guest;
+
+        item.addEventListener("click",()=>{
+
+            nameInput.value = guest;
+
+            guestVerified = true;
+
+            autocomplete.classList.add("hidden");
+
+        });
+
+        autocomplete.appendChild(item);
+
+    });
+
+    autocomplete.classList.remove("hidden");
+
+}
+
+/*****************************************************************
+ NAME INPUT
+******************************************************************/
+
+nameInput.addEventListener("input",()=>{
+
+    guestVerified = false;
+
+    const value = nameInput.value.trim();
+
+    if(value.length < 3){
+
+        autocomplete.classList.add("hidden");
+
+        return;
+
+    }
+
+    fetchGuestSuggestions(value);
+
+});
+
+/*****************************************************************
+ KEYBOARD NAVIGATION
+******************************************************************/
+
+nameInput.addEventListener("keydown",(event)=>{
+
+    const items =
+    autocomplete.querySelectorAll(".autocomplete-item");
+
+    if(items.length===0) return;
+
+    if(event.key==="ArrowDown"){
+
+        event.preventDefault();
+
+        selectedSuggestion++;
+
+        if(selectedSuggestion>=items.length){
+
+            selectedSuggestion=0;
+
+        }
+
+    }
+
+    if(event.key==="ArrowUp"){
+
+        event.preventDefault();
+
+        selectedSuggestion--;
+
+        if(selectedSuggestion<0){
+
+            selectedSuggestion=items.length-1;
+
+        }
+
+    }
+
+    items.forEach(item=>{
+
+        item.classList.remove("active");
+
+    });
+
+    if(selectedSuggestion>=0){
+
+        items[selectedSuggestion]
+        .classList.add("active");
+
+    }
+
+    if(event.key==="Enter" && selectedSuggestion>=0){
+
+        event.preventDefault();
+
+        items[selectedSuggestion].click();
+
+    }
+
+});
+
+/*****************************************************************
+ CLOSE DROPDOWN
+******************************************************************/
+
+document.addEventListener("click",(event)=>{
+
+    if(!event.target.closest(".field")){
+
+        autocomplete.classList.add("hidden");
+
+    }
+
+});
+
+/*****************************************************************
+ VALIDATION
+******************************************************************/
 
 function validateForm(){
 
-    if(form.name.value.trim()===""){
+    if(nameInput.value.trim()===""){
 
         alert("Please enter your name.");
 
@@ -138,7 +344,7 @@ function validateForm(){
 
     }
 
-    if(form.email.value.trim()===""){
+    if(document.getElementById("email").value.trim()===""){
 
         alert("Please enter your email address.");
 
@@ -148,7 +354,7 @@ function validateForm(){
 
     if(attendanceInput.value===""){
 
-        alert("Please select whether you'll be attending.");
+        alert("Please select your attendance.");
 
         return false;
 
@@ -156,9 +362,11 @@ function validateForm(){
 
     if(attendanceInput.value==="Joyfully Accept"){
 
-        if(dietField.value.trim()===""){
+        if(dietInput.value.trim()===""){
 
-            alert("Please tell us about your food allergies or dietary restrictions. If none, simply type 'None'.");
+            alert(
+            "Please tell us about any dietary restrictions. If none, simply type 'None'."
+            );
 
             return false;
 
@@ -178,118 +386,142 @@ function validateForm(){
 
 }
 
+/*****************************************************************
+ SUBMIT
+******************************************************************/
 
-// =====================================================
-// SUBMIT
-// =====================================================
+form.addEventListener("submit",async(event)=>{
 
-form.addEventListener("submit", async function(e){
+event.preventDefault();
 
-    e.preventDefault();
+if(!validateForm()) return;
 
-    if(!validateForm()) return;
+submitButton.disabled=true;
 
-    submitButton.disabled = true;
+loadingOverlay.classList.remove("hidden");
 
-    loadingOverlay.classList.remove("hidden");
+const payload={
 
-    const data = {
+name:nameInput.value.trim(),
 
-        name: document.getElementById("name").value.trim(),
+email:document
+.getElementById("email")
+.value.trim(),
 
-        email: document.getElementById("email").value.trim(),
+attendance:attendanceInput.value,
 
-        attendance: attendanceInput.value,
+allergies:dietInput.value.trim(),
 
-        allergies: dietField.value.trim(),
+parking:parkingInput.value,
 
-        parking: parkingInput.value,
+song:document
+.getElementById("song")
+.value.trim(),
 
-        song: songField.value.trim(),
+message:document
+.getElementById("message")
+.value.trim(),
 
-        message: messageField.value.trim()
+verified:guestVerified
 
-    };
+};
 
-    try{
+try{
 
-        const response = await fetch(SCRIPT_URL,{
+const response=await fetch(
 
-            method:"POST",
+SCRIPT_URL,
 
-            headers:{
+{
 
-                "Content-Type":"application/json"
+method:"POST",
 
-            },
+headers:{
 
-            body:JSON.stringify(data)
+"Content-Type":"application/json"
 
-        });
+},
 
-        if(!response.ok){
+body:JSON.stringify(payload)
 
-            throw new Error("Server Error");
+}
 
-        }
+);
 
-        loadingOverlay.classList.add("hidden");
+const result=await response.json();
 
-        form.style.display="none";
+loadingOverlay.classList.add("hidden");
 
-        successScreen.classList.remove("hidden");
+form.style.display="none";
 
-        if(attendanceInput.value==="Joyfully Accept"){
+if(result.status==="verified"){
 
-            successText.innerHTML =
-            "Thank you for your RSVP!<br><br>We can't wait to celebrate with you! ❤️";
+successScreen.classList.remove("hidden");
 
-        }else{
+if(payload.attendance==="Joyfully Accept"){
 
-            successText.innerHTML =
-            "Thank you for letting us know.<br><br>We'll miss celebrating with you, but we're grateful for your response. ❤️";
+successText.innerHTML=
 
-        }
+"We're absolutely thrilled you'll be celebrating with us! ❤️<br><br>See you on our special day.";
 
-        form.reset();
+}else{
 
-        attendanceInput.value="";
-        parkingInput.value="";
+successText.innerHTML=
 
-        clearButtonGroup(attendanceButtons);
-        clearButtonGroup(parkingButtons);
+"Thank you for letting us know. We'll truly miss celebrating with you, but we sincerely appreciate your response.";
 
-    }
+}
 
-    catch(error){
+}
 
-        loadingOverlay.classList.add("hidden");
+else{
 
-        submitButton.disabled=false;
+verificationScreen
+.classList.remove("hidden");
 
-        alert("Oops! Something went wrong while saving your RSVP. Please try again.");
+}
 
-        console.error(error);
+}
 
-    }
+catch(error){
+
+loadingOverlay.classList.add("hidden");
+
+submitButton.disabled=false;
+
+alert(
+
+"Oops! Something went wrong. Please try again."
+
+);
+
+console.error(error);
+
+}
 
 });
 
+/*****************************************************************
+ PREVENT ACCIDENTAL ENTER
+******************************************************************/
 
-// =====================================================
-// NICE LITTLE TOUCH
-// =====================================================
+document
+.querySelectorAll("input")
 
-document.querySelectorAll("input, textarea").forEach(field=>{
+.forEach(input=>{
 
-    field.addEventListener("keypress",(e)=>{
+input.addEventListener("keydown",(event)=>{
 
-        if(e.key==="Enter" && field.tagName!=="TEXTAREA"){
+if(event.key==="Enter"
 
-            e.preventDefault();
+&&
 
-        }
+input.id!=="name"){
 
-    });
+event.preventDefault();
+
+}
+
+});
 
 });
