@@ -1,4 +1,9 @@
 /* =====================================================
+   Wedding RSVP v3.2 Final
+   Part A
+===================================================== */
+
+/* =====================================================
    RESET
 ===================================================== */
 
@@ -8,27 +13,58 @@
     box-sizing:border-box;
 }
 
-html,
-body{
+/* =====================================================
+   THEME
+===================================================== */
 
-    width:100%;
-    height:100%;
+:root{
+
+    --primary:#9e2d2d;
+    --primary-dark:#842525;
+    --primary-light:#bb4a4a;
+
+    --text:#5f4747;
+    --text-light:#867070;
+
+    --glass:rgba(255,255,255,.68);
+
+    --border:rgba(140,110,110,.18);
+
+    --shadow:
+        0 24px 60px rgba(0,0,0,.18);
+
+    --shadow-dropdown:
+        0 18px 45px rgba(0,0,0,.16);
+
+    --radius:16px;
+
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+html{
+
+    min-height:100%;
 
 }
 
 body{
 
+    min-height:100vh;
+
     font-family:"Lato",sans-serif;
 
-    color:#ffffff;
+    color:var(--text);
 
     background-image:url("assets/bg-desktop.png");
 
-    background-size:cover;
+    background-repeat:no-repeat;
 
     background-position:center;
 
-    background-repeat:no-repeat;
+    background-size:cover;
 
     background-attachment:fixed;
 
@@ -46,7 +82,7 @@ body{
 
     inset:0;
 
-    background:rgba(25,0,0,.10);
+    background:rgba(255,255,255,.05);
 
     backdrop-filter:blur(.5px);
 
@@ -68,31 +104,35 @@ body{
 
     margin-top:45px;
 
-    z-index:5;
+    z-index:10;
 
 }
 
 /* =====================================================
-   RSVP CARD
+   CARD
 ===================================================== */
 
 .card{
 
     position:relative;
 
-    padding:85px 35px 35px;
+    padding:95px 38px 40px;
 
-    border:1px solid rgba(255,255,255,.25);
+    background:var(--glass);
 
-    background:rgba(35,10,12,.72);
+    border-radius:22px;
 
-    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.55);
 
-    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(18px);
 
-    box-shadow:
+    -webkit-backdrop-filter:blur(18px);
 
-    0 12px 50px rgba(0,0,0,.45);
+    box-shadow:var(--shadow);
+
+    transition:
+
+        all .45s cubic-bezier(.4,0,.2,1);
 
 }
 
@@ -102,63 +142,45 @@ body{
 
 .logo-wrapper{
 
-    position:absolute;
+    position:relative;
 
-    top:-70px;
+    display:flex;
 
-    left:50%;
+    justify-content:center;
 
-    transform:translateX(-50%);
+    align-items:center;
 
-    width:430px;
+    margin-top:-95px;
 
-    height:150px;
+    margin-bottom:28px;
 
     pointer-events:none;
 
-    z-index:20;
-
 }
-
-/* RSVP */
 
 .rsvp-logo{
 
-    position:absolute;
+    position:relative;
 
-    width:320px;
+    width:275px;
 
-    left:35px;
-
-    top:12px;
-
-    z-index:2;
-
-    filter:
-
-    drop-shadow(0 6px 10px rgba(0,0,0,.30));
+    z-index:5;
 
 }
-
-/* Wax Seal */
 
 .wax-seal{
 
     position:absolute;
 
-    width:165px;
+    width:145px;
 
-    right:5px;
+    right:calc(50% - 132px);
 
-    top:-10px;
+    top:50%;
 
-    transform:rotate(-10deg);
+    transform:translateY(-50%);
 
-    z-index:1;
-
-    filter:
-
-    drop-shadow(0 10px 18px rgba(0,0,0,.40));
+    z-index:4;
 
 }
 
@@ -168,9 +190,9 @@ body{
 
 .field{
 
-    margin-bottom:28px;
-
     position:relative;
+
+    margin-bottom:28px;
 
 }
 
@@ -180,42 +202,46 @@ body{
 
     margin-bottom:10px;
 
-    font-family:"Cormorant Infant",serif;
+    font-family:"Cormorant Garamond",serif;
 
-    font-size:30px;
+    font-size:31px;
 
     font-weight:600;
 
-    color:#ffffff;
+    color:#6b4a4a;
 
 }
 
 .field span{
 
-    color:#c85a5a;
+    color:var(--primary);
 
 }
+
+/* =====================================================
+   INPUTS
+===================================================== */
 
 input,
 textarea{
 
     width:100%;
 
-    border-radius:9px;
+    padding:15px 18px;
 
-    border:1px solid rgba(255,255,255,.45);
+    border-radius:12px;
 
-    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
 
-    color:#ffffff;
+    background:rgba(255,255,255,.82);
+
+    color:var(--text);
 
     font-size:15px;
 
-    padding:14px 16px;
-
-    transition:.35s;
-
     font-family:"Lato",sans-serif;
+
+    transition:.30s;
 
 }
 
@@ -223,14 +249,14 @@ textarea{
 
     resize:vertical;
 
-    min-height:110px;
+    min-height:120px;
 
 }
 
 input::placeholder,
 textarea::placeholder{
 
-    color:rgba(255,255,255,.55);
+    color:#9b8a8a;
 
 }
 
@@ -239,13 +265,11 @@ textarea:focus{
 
     outline:none;
 
-    border-color:#d4a2a2;
-
-    background:rgba(255,255,255,.08);
+    border-color:var(--primary);
 
     box-shadow:
 
-    0 0 15px rgba(212,162,162,.18);
+        0 0 18px rgba(158,45,45,.12);
 
 }
 
@@ -265,29 +289,29 @@ textarea:focus{
 
     flex:1;
 
-    border:none;
+    padding:15px;
 
-    border-radius:9px;
+    border-radius:12px;
 
-    padding:14px;
+    border:1px solid rgba(120,90,90,.18);
+
+    background:white;
+
+    color:#6a5050;
 
     cursor:pointer;
 
-    background:#4b171b;
-
-    color:white;
-
-    transition:.30s;
+    font-family:"Lato",sans-serif;
 
     font-size:15px;
 
-    font-family:"Lato",sans-serif;
+    transition:.25s;
 
 }
 
 .choice-button:hover{
 
-    background:#7b1f28;
+    background:#f6ece8;
 
     transform:translateY(-2px);
 
@@ -295,7 +319,11 @@ textarea:focus{
 
 .choice-button.active{
 
-    background:#991b1e;
+    background:var(--primary);
+
+    color:white;
+
+    border-color:var(--primary);
 
 }
 
@@ -309,31 +337,49 @@ textarea:focus{
 
     margin-top:15px;
 
+    padding:16px;
+
     border:none;
 
-    border-radius:9px;
+    border-radius:12px;
 
-    padding:15px;
-
-    background:#8d1f2d;
+    background:var(--primary);
 
     color:white;
 
     cursor:pointer;
 
-    font-size:16px;
-
-    transition:.35s;
-
     font-family:"Lato",sans-serif;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+    transition:.30s;
 
 }
 
 #submitButton:hover{
 
-    background:#b3202d;
+    background:var(--primary-dark);
 
-    transform:translateY(-2px);
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 10px 24px rgba(158,45,45,.30);
+
+}
+
+#submitButton:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
 
 }
 
@@ -353,82 +399,87 @@ textarea:focus{
 
     margin-top:6px;
 
-    background:rgba(48,18,20,.97);
+    background:white;
 
-    border:1px solid rgba(255,255,255,.18);
+    border-radius:14px;
 
-    border-radius:10px;
+    border:1px solid rgba(0,0,0,.08);
 
     overflow:hidden;
 
+    box-shadow:var(--shadow-dropdown);
+
     z-index:999;
 
-    box-shadow:
-    0 18px 35px rgba(0,0,0,.35);
-
-    animation:fadeDropdown .20s ease;
+    animation:fadeDropdown .22s ease;
 
 }
 
 .autocomplete-item{
 
-    padding:13px 16px;
+    padding:14px 18px;
 
     cursor:pointer;
 
-    transition:.20s;
+    color:#5c4747;
 
-    font-size:15px;
-
-    color:#ffffff;
+    transition:.18s;
 
 }
 
-.autocomplete-item:hover,
+.autocomplete-item:hover{
+
+    background:#f7efeb;
+
+}
+
 .autocomplete-item.active{
 
-    background:#8d1f2d;
+    background:#f1e3de;
 
 }
 
 .no-results{
 
-    padding:14px;
+    padding:16px;
 
-    color:rgba(255,255,255,.65);
+    color:#999;
 
     font-style:italic;
 
 }
 
-
 /* =====================================================
-   DECLINE BOX
+   DECLINE MESSAGE
 ===================================================== */
 
 .decline-box{
 
-    padding:25px;
+    padding:28px;
 
-    margin-bottom:25px;
+    margin-bottom:28px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.60);
+
+    border:1px solid rgba(120,90,90,.15);
 
     text-align:center;
 
-    border-radius:10px;
-
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.12);
-
-    animation:fadeUp .40s ease;
+    animation:fadeUp .45s ease;
 
 }
 
 .decline-box h3{
 
-    font-family:"Bodoni Moda",serif;
+    font-family:"Cormorant Garamond",serif;
 
-    font-size:28px;
+    font-size:34px;
+
+    font-weight:600;
+
+    color:#6b4a4a;
 
     margin-bottom:12px;
 
@@ -436,66 +487,68 @@ textarea:focus{
 
 .decline-box p{
 
+    color:#6f5b5b;
+
     line-height:1.8;
+
+    font-size:16px;
 
 }
 
-
 /* =====================================================
-   SUCCESS
+   SUCCESS / VERIFICATION
 ===================================================== */
 
 .success-content,
 .verification-content{
 
+    padding:55px 28px;
+
     text-align:center;
 
-    padding:55px 25px;
-
-    animation:fadeUp .50s ease;
+    animation:fadeUp .45s ease;
 
 }
 
 .success-heart{
 
-    font-size:62px;
+    font-size:64px;
 
-    color:#d29d9d;
-
-    animation:heartbeat 1.5s infinite;
+    animation:heartbeat 1.6s infinite;
 
 }
 
 .success-content h2,
 .verification-content h2{
 
-    margin-top:15px;
+    margin:18px 0;
 
-    margin-bottom:15px;
+    font-family:"Cormorant Garamond",serif;
 
-    font-family:"Bodoni Moda",serif;
+    font-size:44px;
 
-    font-size:42px;
+    color:#6b4a4a;
 
-    font-weight:500;
+    font-weight:600;
 
 }
 
 .success-content p,
 .verification-content p{
 
-    line-height:1.8;
+    color:#6f5b5b;
 
-    color:#ececec;
+    line-height:1.9;
+
+    font-size:16px;
 
 }
 
 .verification-icon{
 
-    font-size:52px;
+    font-size:58px;
 
 }
-
 
 /* =====================================================
    DEADLINE
@@ -503,17 +556,11 @@ textarea:focus{
 
 .deadline-wrapper{
 
-    position:absolute;
+    position:relative;
 
-    left:110px;
-
-    bottom:35px;
+    margin:40px auto 15px;
 
     text-align:center;
-
-    color:white;
-
-    z-index:10;
 
     animation:fadeIn 1s ease;
 
@@ -521,30 +568,31 @@ textarea:focus{
 
 .deadline-top{
 
-    font-family:"Cormorant Infant",serif;
+    font-family:"Cormorant Garamond",serif;
 
-    font-size:24px;
+    font-size:22px;
 
-    letter-spacing:1px;
+    letter-spacing:.18em;
 
-    opacity:.92;
+    text-transform:uppercase;
+
+    color:#6b4a4a;
 
 }
 
 .deadline-date{
 
-    margin-top:5px;
+    margin-top:8px;
 
-    font-family:"Bodoni Moda",serif;
+    font-family:"Cinzel",serif;
 
-    font-size:42px;
+    font-size:34px;
 
-    font-weight:500;
+    letter-spacing:.20em;
 
-    letter-spacing:2px;
+    color:var(--primary);
 
 }
-
 
 /* =====================================================
    LOADING
@@ -564,25 +612,25 @@ textarea:focus{
 
     flex-direction:column;
 
-    background:rgba(0,0,0,.70);
+    background:rgba(255,255,255,.55);
 
-    backdrop-filter:blur(3px);
+    backdrop-filter:blur(5px);
 
-    z-index:9999;
+    z-index:99999;
 
 }
 
 .loader{
 
-    width:58px;
+    width:60px;
 
-    height:58px;
+    height:60px;
 
     border-radius:50%;
 
-    border:4px solid rgba(255,255,255,.20);
+    border:4px solid rgba(158,45,45,.20);
 
-    border-top-color:#ffffff;
+    border-top-color:var(--primary);
 
     animation:spin .8s linear infinite;
 
@@ -592,10 +640,13 @@ textarea:focus{
 
     margin-top:18px;
 
-    letter-spacing:1px;
+    font-size:15px;
+
+    color:#6b4a4a;
+
+    letter-spacing:.08em;
 
 }
-
 
 /* =====================================================
    UTILITIES
@@ -607,6 +658,15 @@ textarea:focus{
 
 }
 
+#acceptFields{
+
+    overflow:hidden;
+
+    transition:
+
+        all .35s ease;
+
+}
 
 /* =====================================================
    ANIMATIONS
@@ -698,7 +758,7 @@ textarea:focus{
 
     }
 
-    40%{
+    45%{
 
         transform:scale(.98);
 
@@ -718,7 +778,6 @@ textarea:focus{
 
 }
 
-
 /* =====================================================
    MOBILE
 ===================================================== */
@@ -729,7 +788,11 @@ body{
 
     background-image:url("assets/bg-mobile.png");
 
-    background-position:center top;
+    background-repeat:repeat-y;
+
+    background-size:100% auto;
+
+    background-position:top center;
 
     background-attachment:scroll;
 
@@ -741,7 +804,7 @@ body{
 
     max-width:560px;
 
-    margin:130px auto 40px;
+    margin:120px auto 40px;
 
 }
 
@@ -749,41 +812,39 @@ body{
 
     padding:
 
-    90px
-    25px
-    30px;
+        95px
+        24px
+        30px;
+
+    border-radius:20px;
 
 }
 
 .logo-wrapper{
 
-    width:330px;
+    margin-top:-92px;
 
-    top:-78px;
+    margin-bottom:20px;
 
 }
 
 .rsvp-logo{
 
-    width:255px;
-
-    left:22px;
+    width:240px;
 
 }
 
 .wax-seal{
 
-    width:135px;
+    width:128px;
 
-    right:-5px;
-
-    top:-2px;
+    right:calc(50% - 116px);
 
 }
 
 .field label{
 
-    font-size:27px;
+    font-size:28px;
 
 }
 
@@ -795,30 +856,30 @@ body{
 
 .deadline-wrapper{
 
-    position:relative;
-
-    left:auto;
-
-    bottom:auto;
-
-    margin:40px auto;
+    margin-top:35px;
 
 }
 
 .deadline-top{
 
-    font-size:22px;
+    font-size:18px;
 
 }
 
 .deadline-date{
+
+    font-size:28px;
+
+}
+
+.success-content h2,
+.verification-content h2{
 
     font-size:34px;
 
 }
 
 }
-
 
 /* =====================================================
    LARGE DESKTOP
@@ -828,13 +889,31 @@ body{
 
 .rsvp-wrapper{
 
-    margin-left:75px;
+    margin-left:70px;
 
     margin-top:60px;
 
     transform:scale(1.05);
 
     transform-origin:top left;
+
+}
+
+}
+
+/* =====================================================
+   ULTRA WIDE
+===================================================== */
+
+@media (min-width:2200px){
+
+.rsvp-wrapper{
+
+    transform:scale(1.12);
+
+    transform-origin:top left;
+
+    margin-left:100px;
 
 }
 
