@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
@@ -23,12 +23,7 @@ body{
 
     font-family:'Poppins',sans-serif;
 
-    background:
-    linear-gradient(
-        135deg,
-        #f6f3f5,
-        #ebe6ea
-    );
+    background:linear-gradient(135deg,#f7f4f5,#ece8eb);
 
     min-height:100vh;
 
@@ -40,19 +35,18 @@ body{
 
 }
 
-.card{
+.container{
 
     width:100%;
     max-width:700px;
 
-    background:white;
+    background:#fff;
 
     border-radius:20px;
 
-    box-shadow:
-    0 10px 40px rgba(0,0,0,.12);
-
     padding:45px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.12);
 
 }
 
@@ -60,11 +54,13 @@ h1{
 
     font-family:'Cormorant Garamond',serif;
 
+    text-align:center;
+
     font-size:52px;
 
     color:#b07b8f;
 
-    text-align:center;
+    margin-bottom:10px;
 
 }
 
@@ -74,15 +70,13 @@ h1{
 
     color:#777;
 
-    margin-top:10px;
-
     margin-bottom:35px;
 
 }
 
-.group{
+.form-group{
 
-    margin-bottom:20px;
+    margin-bottom:22px;
 
 }
 
@@ -99,8 +93,8 @@ label{
 }
 
 input,
-select,
-textarea{
+textarea,
+select{
 
     width:100%;
 
@@ -112,22 +106,21 @@ textarea{
 
     font-size:15px;
 
-    transition:.25s;
-
     font-family:inherit;
+
+    transition:.2s;
 
 }
 
 input:focus,
-select:focus,
-textarea:focus{
+textarea:focus,
+select:focus{
 
     outline:none;
 
     border-color:#d8a8b9;
 
-    box-shadow:
-    0 0 0 4px rgba(216,168,185,.2);
+    box-shadow:0 0 0 4px rgba(216,168,185,.2);
 
 }
 
@@ -139,37 +132,65 @@ textarea{
 
 }
 
+.radio-group{
+
+    display:flex;
+
+    gap:25px;
+
+    margin-top:10px;
+
+}
+
+.radio-group label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-weight:400;
+
+    cursor:pointer;
+
+}
+
+.radio-group input{
+
+    width:auto;
+
+}
+
 button{
 
     width:100%;
 
     padding:16px;
 
-    border:none;
-
-    border-radius:12px;
-
     background:#b07b8f;
 
     color:white;
+
+    border:none;
+
+    border-radius:12px;
 
     font-size:16px;
 
     cursor:pointer;
 
-    transition:.25s;
+    transition:.2s;
 
 }
 
 button:hover{
 
-    background:#9d687c;
-
-    transform:translateY(-2px);
+    background:#9b667a;
 
 }
 
-.success{
+#success{
 
     display:none;
 
@@ -177,7 +198,7 @@ button:hover{
 
     margin-top:25px;
 
-    color:#3b7d48;
+    color:#3d8a53;
 
     font-weight:600;
 
@@ -185,7 +206,7 @@ button:hover{
 
 @media(max-width:600px){
 
-.card{
+.container{
 
 padding:30px;
 
@@ -197,6 +218,14 @@ font-size:40px;
 
 }
 
+.radio-group{
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
 }
 
 </style>
@@ -205,147 +234,162 @@ font-size:40px;
 
 <body>
 
-<div class="card">
+<div class="container">
 
 <h1>Wedding RSVP</h1>
 
 <p class="subtitle">
-We can't wait to celebrate with you!
+Please let us know if you'll be celebrating with us.
 </p>
 
 <form id="rsvpForm">
 
-<div class="group">
-<label>Full Name</label>
+<div class="form-group">
+
+<label for="name">
+Name <span style="color:#c55;">*</span>
+</label>
+
 <input
 type="text"
 id="name"
 required>
+
 </div>
 
-<div class="group">
-<label>Email Address</label>
+<div class="form-group">
+
+<label for="email">
+Email Address <span style="color:#c55;">*</span>
+</label>
+
 <input
 type="email"
 id="email"
 required>
+
 </div>
 
-<div class="group">
-<label>Will you be attending?</label>
+<div class="form-group">
+
+<label for="attendance">
+Will you be attending? <span style="color:#c55;">*</span>
+</label>
 
 <select id="attendance" required>
 
-<option value="">Please Select</option>
-
+<option value="">Please select</option>
 <option>Joyfully Accept</option>
-
 <option>Regretfully Decline</option>
 
 </select>
 
 </div>
 
-<div class="group">
+<div class="form-group">
 
-<label>Number of Guests</label>
+<label for="diet">
+Do you have any food allergies or dietary restrictions? If yes, please specify. <span style="color:#c55;">*</span>
+</label>
 
+<textarea
+id="diet"
+required
+placeholder="If none, please type 'None'."></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Will you need parking? <span style="color:#c55;">*</span>
+</label>
+
+<div class="radio-group">
+
+<label>
 <input
-type="number"
-id="guests"
-min="1"
-max="10"
-value="1">
+type="radio"
+name="parking"
+value="Yes"
+required>
+Yes
+</label>
+
+<label>
+<input
+type="radio"
+name="parking"
+value="No">
+No
+</label>
 
 </div>
 
-<div class="group">
-
-<label>Meal Preference</label>
-
-<select id="meal">
-
-<option>Beef</option>
-
-<option>Chicken</option>
-
-<option>Fish</option>
-
-<option>Vegetarian</option>
-
-</select>
-
 </div>
 
-<div class="group">
+<div class="form-group">
 
-<label>Dietary Restrictions</label>
+<label for="song">
+Song Request (Optional)
+</label>
 
 <input
 type="text"
-id="diet">
+id="song"
+placeholder="Your favorite dance song">
 
 </div>
 
-<div class="group">
+<div class="form-group">
 
-<label>Song Request</label>
+<label for="message">
+Message for the Couple (Optional)
+</label>
 
-<input
-type="text"
-id="song">
-
-</div>
-
-<div class="group">
-
-<label>Message for the Couple</label>
-
-<textarea id="message"></textarea>
+<textarea
+id="message"
+placeholder="Leave us a message..."></textarea>
 
 </div>
 
 <button type="submit">
-
 Submit RSVP
-
 </button>
 
 </form>
 
-<div class="success" id="success">
-
+<div id="success">
 🎉 Thank you! Your RSVP has been received.
-
 </div>
 
 </div>
 
 <script>
 
-const form=document.getElementById("rsvpForm");
+const form = document.getElementById("rsvpForm");
 
-form.addEventListener("submit",async function(e){
+form.addEventListener("submit", async function(e){
 
 e.preventDefault();
 
-const data={
+const parking = document.querySelector('input[name="parking"]:checked').value;
 
-name:document.getElementById("name").value,
+const data = {
 
-email:document.getElementById("email").value,
+name: document.getElementById("name").value,
 
-attendance:document.getElementById("attendance").value,
+email: document.getElementById("email").value,
 
-guests:document.getElementById("guests").value,
+attendance: document.getElementById("attendance").value,
 
-meal:document.getElementById("meal").value,
+diet: document.getElementById("diet").value,
 
-diet:document.getElementById("diet").value,
+parking: parking,
 
-song:document.getElementById("song").value,
+song: document.getElementById("song").value,
 
-message:document.getElementById("message").value
+message: document.getElementById("message").value
 
 };
 
