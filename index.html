@@ -1,43 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Wedding RSVP</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
 
-font-family:Arial;
-background:#f4f4f4;
+    font-family:'Poppins',sans-serif;
+
+    background:
+    linear-gradient(
+        135deg,
+        #f6f3f5,
+        #ebe6ea
+    );
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px;
 
 }
 
-.container{
+.card{
 
-width:600px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:15px;
+    width:100%;
+    max-width:700px;
+
+    background:white;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,.12);
+
+    padding:45px;
 
 }
 
-input,select{
+h1{
 
-width:100%;
-padding:10px;
-margin:10px 0;
+    font-family:'Cormorant Garamond',serif;
+
+    font-size:52px;
+
+    color:#b07b8f;
+
+    text-align:center;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#777;
+
+    margin-top:10px;
+
+    margin-bottom:35px;
+
+}
+
+.group{
+
+    margin-bottom:20px;
+
+}
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:500;
+
+    color:#555;
+
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+    font-family:inherit;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+
+    border-color:#d8a8b9;
+
+    box-shadow:
+    0 0 0 4px rgba(216,168,185,.2);
+
+}
+
+textarea{
+
+    resize:vertical;
+
+    min-height:120px;
 
 }
 
 button{
 
-background:#D18FA3;
-color:white;
-padding:15px;
-border:none;
-cursor:pointer;
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#b07b8f;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+button:hover{
+
+    background:#9d687c;
+
+    transform:translateY(-2px);
+
+}
+
+.success{
+
+    display:none;
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#3b7d48;
+
+    font-weight:600;
+
+}
+
+@media(max-width:600px){
+
+.card{
+
+padding:30px;
+
+}
+
+h1{
+
+font-size:40px;
+
+}
 
 }
 
@@ -47,64 +205,178 @@ cursor:pointer;
 
 <body>
 
-<div class="container">
+<div class="card">
 
-<h1>RSVP</h1>
+<h1>Wedding RSVP</h1>
 
-<input id="name" placeholder="Name">
+<p class="subtitle">
+We can't wait to celebrate with you!
+</p>
 
-<input id="email" placeholder="Email">
+<form id="rsvpForm">
 
-<select id="attending">
+<div class="group">
+<label>Full Name</label>
+<input
+type="text"
+id="name"
+required>
+</div>
 
-<option>Yes</option>
-<option>No</option>
+<div class="group">
+<label>Email Address</label>
+<input
+type="email"
+id="email"
+required>
+</div>
+
+<div class="group">
+<label>Will you be attending?</label>
+
+<select id="attendance" required>
+
+<option value="">Please Select</option>
+
+<option>Joyfully Accept</option>
+
+<option>Regretfully Decline</option>
 
 </select>
+
+</div>
+
+<div class="group">
+
+<label>Number of Guests</label>
+
+<input
+type="number"
+id="guests"
+min="1"
+max="10"
+value="1">
+
+</div>
+
+<div class="group">
+
+<label>Meal Preference</label>
 
 <select id="meal">
 
 <option>Beef</option>
+
 <option>Chicken</option>
+
 <option>Fish</option>
+
+<option>Vegetarian</option>
 
 </select>
 
-<button onclick="submitForm()">
+</div>
 
-Submit
+<div class="group">
+
+<label>Dietary Restrictions</label>
+
+<input
+type="text"
+id="diet">
+
+</div>
+
+<div class="group">
+
+<label>Song Request</label>
+
+<input
+type="text"
+id="song">
+
+</div>
+
+<div class="group">
+
+<label>Message for the Couple</label>
+
+<textarea id="message"></textarea>
+
+</div>
+
+<button type="submit">
+
+Submit RSVP
 
 </button>
+
+</form>
+
+<div class="success" id="success">
+
+🎉 Thank you! Your RSVP has been received.
+
+</div>
 
 </div>
 
 <script>
 
-async function submitForm(){
+const form=document.getElementById("rsvpForm");
+
+form.addEventListener("submit",async function(e){
+
+e.preventDefault();
 
 const data={
 
 name:document.getElementById("name").value,
+
 email:document.getElementById("email").value,
-attending:document.getElementById("attending").value,
-meal:document.getElementById("meal").value
+
+attendance:document.getElementById("attendance").value,
+
+guests:document.getElementById("guests").value,
+
+meal:document.getElementById("meal").value,
+
+diet:document.getElementById("diet").value,
+
+song:document.getElementById("song").value,
+
+message:document.getElementById("message").value
 
 };
+
+try{
 
 await fetch("https://script.google.com/macros/s/AKfycbxFKip6tu0Qx5h2qX_lyBznJ5DrLcvCdHZVN0xhiguTx8GESDDO0nOYNLHTeKzEj12E/exec",{
 
 method:"POST",
 
+headers:{
+"Content-Type":"application/json"
+},
+
 body:JSON.stringify(data)
 
 });
 
-alert("Thank you!");
+form.reset();
+
+document.getElementById("success").style.display="block";
 
 }
+catch(error){
+
+alert("Something went wrong. Please try again.");
+
+}
+
+});
 
 </script>
 
 </body>
-
 </html>
