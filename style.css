@@ -643,7 +643,7 @@ textarea:focus{
 
     color:white;
 
-    z-index:20;
+    z-index:100;
 
     padding:18px 22px;
 
