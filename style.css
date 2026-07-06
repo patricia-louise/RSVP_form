@@ -633,13 +633,13 @@ textarea:focus{
 
     position:fixed;
 
-    right:48px;
+    left:48px;
 
     bottom:42px;
 
     z-index:100;
 
-    width:360px;
+    width:260px;
 
     padding:18px 22px;
 
