@@ -1,13 +1,13 @@
 /*****************************************************************
- Wedding RSVP v3.0
- By ChatGPT ❤️
-******************************************************************/
+ Wedding RSVP v3.1
+*****************************************************************/
 
 /***************************************************************
  CONFIGURATION
 ****************************************************************/
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5rNRi72JPB9YWSWVeIV-jywbtsb2gop9AK1dNNBJ-Ew27cMslbtgitb545tRSGElc/exec";
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbz5rNRi72JPB9YWSWVeIV-jywbtsb2gop9AK1dNNBJ-Ew27cMslbtgitb545tRSGElc/exec";
 
 /***************************************************************
  ELEMENTS
@@ -15,50 +15,137 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5rNRi72JPB9YWSWVeI
 
 const form = document.getElementById("rsvpForm");
 
-const attendanceInput = document.getElementById("attendance");
-const parkingInput = document.getElementById("parking");
-
-const acceptFields = document.getElementById("acceptFields");
-const declineMessage = document.getElementById("declineMessage");
-
-const submitButton = document.getElementById("submitButton");
-
-const loadingOverlay = document.getElementById("loadingOverlay");
-
-const successScreen = document.getElementById("successScreen");
-
-const verificationScreen = document.getElementById("verificationScreen");
-
-const successText = document.getElementById("successText");
-
-const autocomplete = document.getElementById("autocomplete");
-
 const nameInput = document.getElementById("name");
-
+const emailInput = document.getElementById("email");
 const dietInput = document.getElementById("diet");
+const songInput = document.getElementById("song");
+const messageInput = document.getElementById("message");
+
+const attendanceInput =
+document.getElementById("attendance");
+
+const parkingInput =
+document.getElementById("parking");
+
+const attendanceButtons =
+document.querySelectorAll(".attendance");
 
 const parkingButtons =
 document.querySelectorAll(".parking");
 
-const attendanceButtons =
-document.querySelectorAll(".attendance");
+const acceptFields =
+document.getElementById("acceptFields");
+
+const declineMessage =
+document.getElementById("declineMessage");
+
+const autocomplete =
+document.getElementById("autocomplete");
+
+const submitButton =
+document.getElementById("submitButton");
+
+const loadingOverlay =
+document.getElementById("loadingOverlay");
+
+const successScreen =
+document.getElementById("successScreen");
+
+const verificationScreen =
+document.getElementById("verificationScreen");
+
+const successText =
+document.getElementById("successText");
 
 /***************************************************************
  STATE
 ****************************************************************/
 
-let guestSuggestions = [];
+let guestList = [];
 
-let selectedSuggestion = -1;
+let filteredGuests = [];
 
-let guestVerified = false;
+let selectedIndex = -1;
 
-acceptFields.style.display = "none";
-declineMessage.style.display = "none";
+let pageReady = false;
 
 /***************************************************************
- BUTTON HELPERS
+ INITIALIZE
 ****************************************************************/
+
+window.addEventListener("load", async ()=>{
+
+    hideAcceptFields();
+
+    hideDecline();
+
+    await loadGuestList();
+
+    pageReady = true;
+
+});
+
+/***************************************************************
+ LOAD GUEST LIST
+****************************************************************/
+
+async function loadGuestList(){
+
+    try{
+
+        const response = await fetch(
+
+            SCRIPT_URL + "?action=guests"
+
+        );
+
+        if(!response.ok){
+
+            throw new Error("Unable to load guest list.");
+
+        }
+
+        guestList = await response.json();
+
+        console.log(
+
+            "Guest list loaded:",
+
+            guestList.length,
+
+            "guests"
+
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        guestList = [];
+
+    }
+
+}
+
+/***************************************************************
+ HELPERS
+****************************************************************/
+
+function normalize(text){
+
+    return String(text)
+
+    .toLowerCase()
+
+    .trim()
+
+    .replace(/\s+/g," ")
+
+    .replace(/[^\w\s]/g,"");
+
+}
 
 function clearButtons(buttons){
 
@@ -76,15 +163,15 @@ function activateButton(button){
 
 }
 
-function hideAcceptFields(){
-
-    acceptFields.style.display="none";
-
-}
-
 function showAcceptFields(){
 
     acceptFields.style.display="block";
+
+}
+
+function hideAcceptFields(){
+
+    acceptFields.style.display="none";
 
 }
 
@@ -101,104 +188,60 @@ function hideDecline(){
 }
 
 /***************************************************************
- ATTENDANCE
+ AUTOCOMPLETE
 ****************************************************************/
 
-attendanceButtons.forEach(button=>{
+function filterGuests(query){
 
-button.addEventListener("click",()=>{
+    const search = normalize(query);
 
-clearButtons(attendanceButtons);
+    if(search.length < 3){
 
-activateButton(button);
+        filteredGuests = [];
 
-attendanceInput.value =
-button.dataset.value;
+        drawSuggestions();
 
-if(button.dataset.value==="Joyfully Accept"){
+        return;
 
-showAcceptFields();
+    }
 
-hideDecline();
+    filteredGuests = guestList
 
-}else{
+        .filter(name=>{
 
-hideAcceptFields();
+            return normalize(name).includes(search);
 
-showDecline();
+        })
 
-parkingInput.value="";
+        .sort((a,b)=>{
 
-clearButtons(parkingButtons);
+            const aStarts = normalize(a).startsWith(search);
+            const bStarts = normalize(b).startsWith(search);
+
+            if(aStarts && !bStarts) return -1;
+            if(!aStarts && bStarts) return 1;
+
+            return a.localeCompare(b);
+
+        })
+
+        .slice(0,8);
+
+    drawSuggestions();
 
 }
-
-});
-
-});
 
 /***************************************************************
- PARKING
+ DRAW SUGGESTIONS
 ****************************************************************/
-
-parkingButtons.forEach(button=>{
-
-button.addEventListener("click",()=>{
-
-clearButtons(parkingButtons);
-
-activateButton(button);
-
-parkingInput.value=
-button.dataset.value;
-
-});
-
-});
-
-/***************************************************************
- LOAD GUEST SUGGESTIONS
-****************************************************************/
-
-async function fetchGuestSuggestions(query){
-
-try{
-
-const response = await fetch(
-
-SCRIPT_URL +
-"?action=guests&q=" +
-encodeURIComponent(query)
-
-);
-
-const data = await response.json();
-
-guestSuggestions = data;
-
-drawSuggestions();
-
-}
-
-catch(error){
-
-console.error(error);
-
-}
-
-}
-
-/*****************************************************************
- DRAW AUTOCOMPLETE
-******************************************************************/
 
 function drawSuggestions(){
 
     autocomplete.innerHTML = "";
 
-    selectedSuggestion = -1;
+    selectedIndex = -1;
 
-    if(guestSuggestions.length===0){
+    if(filteredGuests.length===0){
 
         autocomplete.classList.add("hidden");
 
@@ -206,21 +249,17 @@ function drawSuggestions(){
 
     }
 
-    guestSuggestions.forEach((guest,index)=>{
+    filteredGuests.forEach((guest,index)=>{
 
         const item = document.createElement("div");
 
         item.className = "autocomplete-item";
 
-        item.innerHTML = guest;
+        item.textContent = guest;
 
-        item.addEventListener("click",()=>{
+        item.addEventListener("mousedown",()=>{
 
-            nameInput.value = guest;
-
-            guestVerified = true;
-
-            autocomplete.classList.add("hidden");
+            selectGuest(index);
 
         });
 
@@ -232,31 +271,33 @@ function drawSuggestions(){
 
 }
 
-/*****************************************************************
+/***************************************************************
+ SELECT GUEST
+****************************************************************/
+
+function selectGuest(index){
+
+    nameInput.value = filteredGuests[index];
+
+    autocomplete.classList.add("hidden");
+
+    selectedIndex = -1;
+
+}
+
+/***************************************************************
  NAME INPUT
-******************************************************************/
+****************************************************************/
 
 nameInput.addEventListener("input",()=>{
 
-    guestVerified = false;
-
-    const value = nameInput.value.trim();
-
-    if(value.length < 3){
-
-        autocomplete.classList.add("hidden");
-
-        return;
-
-    }
-
-    fetchGuestSuggestions(value);
+    filterGuests(nameInput.value);
 
 });
 
-/*****************************************************************
+/***************************************************************
  KEYBOARD NAVIGATION
-******************************************************************/
+****************************************************************/
 
 nameInput.addEventListener("keydown",(event)=>{
 
@@ -265,31 +306,53 @@ nameInput.addEventListener("keydown",(event)=>{
 
     if(items.length===0) return;
 
-    if(event.key==="ArrowDown"){
+    switch(event.key){
 
-        event.preventDefault();
+        case "ArrowDown":
 
-        selectedSuggestion++;
+            event.preventDefault();
 
-        if(selectedSuggestion>=items.length){
+            selectedIndex++;
 
-            selectedSuggestion=0;
+            if(selectedIndex>=items.length){
 
-        }
+                selectedIndex=0;
 
-    }
+            }
 
-    if(event.key==="ArrowUp"){
+            break;
 
-        event.preventDefault();
+        case "ArrowUp":
 
-        selectedSuggestion--;
+            event.preventDefault();
 
-        if(selectedSuggestion<0){
+            selectedIndex--;
 
-            selectedSuggestion=items.length-1;
+            if(selectedIndex<0){
 
-        }
+                selectedIndex=items.length-1;
+
+            }
+
+            break;
+
+        case "Enter":
+
+            if(selectedIndex>=0){
+
+                event.preventDefault();
+
+                selectGuest(selectedIndex);
+
+            }
+
+            return;
+
+        case "Escape":
+
+            autocomplete.classList.add("hidden");
+
+            return;
 
     }
 
@@ -299,229 +362,32 @@ nameInput.addEventListener("keydown",(event)=>{
 
     });
 
-    if(selectedSuggestion>=0){
+    if(selectedIndex>=0){
 
-        items[selectedSuggestion]
+        items[selectedIndex]
+
         .classList.add("active");
 
     }
 
-    if(event.key==="Enter" && selectedSuggestion>=0){
-
-        event.preventDefault();
-
-        items[selectedSuggestion].click();
-
-    }
-
 });
 
-/*****************************************************************
- CLOSE DROPDOWN
-******************************************************************/
+/***************************************************************
+ CLOSE AUTOCOMPLETE
+****************************************************************/
 
 document.addEventListener("click",(event)=>{
 
-    if(!event.target.closest(".field")){
+    if(
+
+        !event.target.closest("#name") &&
+
+        !event.target.closest("#autocomplete")
+
+    ){
 
         autocomplete.classList.add("hidden");
 
     }
-
-});
-
-/*****************************************************************
- VALIDATION
-******************************************************************/
-
-function validateForm(){
-
-    if(nameInput.value.trim()===""){
-
-        alert("Please enter your name.");
-
-        return false;
-
-    }
-
-    if(document.getElementById("email").value.trim()===""){
-
-        alert("Please enter your email address.");
-
-        return false;
-
-    }
-
-    if(attendanceInput.value===""){
-
-        alert("Please select your attendance.");
-
-        return false;
-
-    }
-
-    if(attendanceInput.value==="Joyfully Accept"){
-
-        if(dietInput.value.trim()===""){
-
-            alert(
-            "Please tell us about any dietary restrictions. If none, simply type 'None'."
-            );
-
-            return false;
-
-        }
-
-        if(parkingInput.value===""){
-
-            alert("Please let us know whether you need parking.");
-
-            return false;
-
-        }
-
-    }
-
-    return true;
-
-}
-
-/*****************************************************************
- SUBMIT
-******************************************************************/
-
-form.addEventListener("submit",async(event)=>{
-
-event.preventDefault();
-
-if(!validateForm()) return;
-
-submitButton.disabled=true;
-
-loadingOverlay.classList.remove("hidden");
-
-const payload={
-
-name:nameInput.value.trim(),
-
-email:document
-.getElementById("email")
-.value.trim(),
-
-attendance:attendanceInput.value,
-
-allergies:dietInput.value.trim(),
-
-parking:parkingInput.value,
-
-song:document
-.getElementById("song")
-.value.trim(),
-
-message:document
-.getElementById("message")
-.value.trim(),
-
-verified:guestVerified
-
-};
-
-try{
-
-const response=await fetch(
-
-SCRIPT_URL,
-
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify(payload)
-
-}
-
-);
-
-const result=await response.json();
-
-loadingOverlay.classList.add("hidden");
-
-form.style.display="none";
-
-if(result.status==="verified"){
-
-successScreen.classList.remove("hidden");
-
-if(payload.attendance==="Joyfully Accept"){
-
-successText.innerHTML=
-
-"We're absolutely thrilled you'll be celebrating with us! ❤️<br><br>See you on our special day.";
-
-}else{
-
-successText.innerHTML=
-
-"Thank you for letting us know. We'll truly miss celebrating with you, but we sincerely appreciate your response.";
-
-}
-
-}
-
-else{
-
-verificationScreen
-.classList.remove("hidden");
-
-}
-
-}
-
-catch(error){
-
-loadingOverlay.classList.add("hidden");
-
-submitButton.disabled=false;
-
-alert(
-
-"Oops! Something went wrong. Please try again."
-
-);
-
-console.error(error);
-
-}
-
-});
-
-/*****************************************************************
- PREVENT ACCIDENTAL ENTER
-******************************************************************/
-
-document
-.querySelectorAll("input")
-
-.forEach(input=>{
-
-input.addEventListener("keydown",(event)=>{
-
-if(event.key==="Enter"
-
-&&
-
-input.id!=="name"){
-
-event.preventDefault();
-
-}
-
-});
 
 });
