@@ -2,7 +2,7 @@
 // CONFIGURATION
 // =====================================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFKip6tu0Qx5h2qX_lyBznJ5DrLcvCdHZVN0xhiguTx8GESDDO0nOYNLHTeKzEj12E/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-6EiI1w48lp3axXYGnnQVp1NcA2IvF66-0aDlE71bfgF7m4_bXD7npnKdScatE61G/exec";
 
 
 // =====================================================
