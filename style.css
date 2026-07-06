@@ -1022,9 +1022,15 @@ body{
 
 .deadline-wrapper{
 
-    left:75px;
+  position:relative;
 
-    bottom:55px;
+  right:auto;
+
+  left:auto;
+
+  bottom:auto;
+
+  margin:40px auto;
 
 }
 
