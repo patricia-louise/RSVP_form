@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Wedding RSVP</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+background:#f4f4f4;
+
+}
+
+.container{
+
+width:600px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+
+}
+
+input,select{
+
+width:100%;
+padding:10px;
+margin:10px 0;
+
+}
+
+button{
+
+background:#D18FA3;
+color:white;
+padding:15px;
+border:none;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>RSVP</h1>
+
+<input id="name" placeholder="Name">
+
+<input id="email" placeholder="Email">
+
+<select id="attending">
+
+<option>Yes</option>
+<option>No</option>
+
+</select>
+
+<select id="meal">
+
+<option>Beef</option>
+<option>Chicken</option>
+<option>Fish</option>
+
+</select>
+
+<button onclick="submitForm()">
+
+Submit
+
+</button>
+
+</div>
+
+<script>
+
+async function submitForm(){
+
+const data={
+
+name:document.getElementById("name").value,
+email:document.getElementById("email").value,
+attending:document.getElementById("attending").value,
+meal:document.getElementById("meal").value
+
+};
+
+await fetch("https://script.google.com/macros/s/AKfycbxFKip6tu0Qx5h2qX_lyBznJ5DrLcvCdHZVN0xhiguTx8GESDDO0nOYNLHTeKzEj12E/exec",{
+
+method:"POST",
+
+body:JSON.stringify(data)
+
+});
+
+alert("Thank you!");
+
+}
+
+</script>
+
+</body>
+
+</html>
