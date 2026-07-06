@@ -1057,3 +1057,39 @@ body{
 }
 
 }
+
+.verification-message{
+
+    margin-top:10px;
+
+    padding:12px 14px;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    animation:fadeUp .25s ease;
+
+}
+
+.verification-message.verified{
+
+    background:rgba(72,140,91,.18);
+
+    border:1px solid rgba(72,140,91,.35);
+
+    color:#d9f5df;
+
+}
+
+.verification-message.unverified{
+
+    background:rgba(183,133,36,.18);
+
+    border:1px solid rgba(183,133,36,.35);
+
+    color:#ffe9bb;
+
+}
