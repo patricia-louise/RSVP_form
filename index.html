@@ -4,75 +4,73 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Wedding RSVP</title>
+    <title>Kel & Patricia | RSVP</title>
 
-    <link rel="icon" href="assets/favicon.png">
+    <link rel="icon"
+          type="image/png"
+          href="assets/favicon.png">
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
+          href="https://fonts.googleapis.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
-    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Cormorant+Infant:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap"
+          rel="stylesheet">
+
     <link rel="stylesheet"
-        href="style.css">
+          href="style.css">
 
 </head>
 
 <body>
 
-    <!-- Dark Overlay -->
+<div class="background-overlay"></div>
 
-    <div class="page-overlay"></div>
+<!-- ===========================
+     RSVP CARD
+============================ -->
 
-    <!-- RSVP Card -->
+<div class="rsvp-wrapper">
 
-    <main class="rsvp-container">
+    <!-- Decorative Logo -->
 
-        <!-- RSVP Header -->
+    <div class="logo-wrapper">
 
-        <div class="rsvp-header">
+        <img
+            src="assets/wax-seal.png"
+            class="wax-seal"
+            alt="Wax Seal">
 
-            <img
-                src="assets/logo-rsvp.png"
-                class="logo"
-                alt="RSVP">
+        <img
+            src="assets/logo-rsvp.png"
+            class="rsvp-logo"
+            alt="RSVP">
 
-            <img
-                src="assets/wax-seal.png"
-                class="seal"
-                alt="Wax Seal">
+    </div>
 
-        </div>
+    <!-- Card -->
 
-        <!-- Intro -->
+    <div class="card">
 
-        <p class="intro">
+        <form
+            id="rsvpForm"
+            autocomplete="off">
 
-            We can't wait to celebrate with you!
-
-            Kindly respond on or before
-
-            <strong>July 20, 2026</strong>
-
-        </p>
-
-        <!-- Form -->
-
-        <form id="rsvpForm">
-
-            <!-- Name -->
+            <!-- ======================
+                 NAME
+            ======================= -->
 
             <div class="field">
 
-                <label>
+                <label for="name">
 
                     Name
                     <span>*</span>
@@ -80,17 +78,29 @@
                 </label>
 
                 <input
-                    type="text"
                     id="name"
-                    required>
+                    name="name"
+                    type="text"
+                    required
+                    placeholder="Start typing your name...">
+
+                <!-- Autocomplete -->
+
+                <div
+                    id="autocomplete"
+                    class="autocomplete hidden">
+
+                </div>
 
             </div>
 
-            <!-- Email -->
+            <!-- ======================
+                 EMAIL
+            ======================= -->
 
             <div class="field">
 
-                <label>
+                <label for="email">
 
                     Email Address
                     <span>*</span>
@@ -98,13 +108,16 @@
                 </label>
 
                 <input
-                    type="email"
                     id="email"
+                    name="email"
+                    type="email"
                     required>
 
             </div>
 
-            <!-- Attendance -->
+            <!-- ======================
+                 ATTENDANCE
+            ======================= -->
 
             <div class="field">
 
@@ -115,11 +128,16 @@
 
                 </label>
 
-                <div class="attendance-buttons">
+                <input
+                    type="hidden"
+                    id="attendance"
+                    name="attendance">
+
+                <div class="button-group">
 
                     <button
                         type="button"
-                        class="attendance-btn"
+                        class="choice-button attendance"
                         data-value="Joyfully Accept">
 
                         Joyfully Accept
@@ -128,7 +146,7 @@
 
                     <button
                         type="button"
-                        class="attendance-btn"
+                        class="choice-button attendance"
                         data-value="Regretfully Decline">
 
                         Regretfully Decline
@@ -137,53 +155,52 @@
 
                 </div>
 
-                <input
-                    type="hidden"
-                    id="attendance"
-                    required>
-
             </div>
 
-            <!-- CONDITIONAL AREA -->
+            <!-- ======================
+                 CONDITIONAL FIELDS
+            ======================= -->
 
             <div id="acceptFields">
 
-                <!-- Food -->
-
                 <div class="field">
 
-                    <label>
+                    <label for="diet">
 
-                        Do you have any food allergies or dietary restrictions?
-
+                        Food Allergies /
+                        Dietary Restrictions
                         <span>*</span>
 
                     </label>
 
                     <textarea
                         id="diet"
+                        name="diet"
                         rows="3"
-                        placeholder="If none, simply type 'None'."></textarea>
+                        placeholder="If none, simply type 'None'."
+                        required></textarea>
 
                 </div>
-
-                <!-- Parking -->
 
                 <div class="field">
 
                     <label>
 
                         Will you need parking?
-
                         <span>*</span>
 
                     </label>
 
-                    <div class="parking-buttons">
+                    <input
+                        type="hidden"
+                        id="parking"
+                        name="parking">
+
+                    <div class="button-group">
 
                         <button
                             type="button"
-                            class="parking-btn"
+                            class="choice-button parking"
                             data-value="Yes">
 
                             Yes
@@ -192,7 +209,7 @@
 
                         <button
                             type="button"
-                            class="parking-btn"
+                            class="choice-button parking"
                             data-value="No">
 
                             No
@@ -201,67 +218,81 @@
 
                     </div>
 
-                    <input
-                        type="hidden"
-                        id="parking">
-
                 </div>
 
-                <!-- Song -->
+                                <!-- ======================
+                     SONG REQUEST
+                ======================= -->
 
                 <div class="field">
 
-                    <label>
+                    <label for="song">
 
                         Song Request
 
                     </label>
 
                     <input
-                        type="text"
                         id="song"
+                        name="song"
+                        type="text"
                         placeholder="Optional">
+
+                </div>
+
+                <!-- ======================
+                     MESSAGE
+                ======================= -->
+
+                <div class="field">
+
+                    <label for="message">
+
+                        Message for the Couple
+
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        placeholder="Leave a sweet message for us..."></textarea>
 
                 </div>
 
             </div>
 
-            <!-- Decline Message -->
+            <!-- ======================
+                 DECLINE MESSAGE
+            ======================= -->
 
             <div
                 id="declineMessage"
                 class="hidden">
 
-                <p>
+                <div class="decline-box">
 
-                    We're so sorry you won't be able to celebrate with us.
+                    <h3>
+                        Thank You ❤️
+                    </h3>
 
-                    Thank you for letting us know.
+                    <p>
 
-                    ❤️
+                        Thank you for letting us know.
 
-                </p>
+                        Although we'll miss celebrating
+                        with you in person, we're grateful
+                        for your response and warm wishes.
 
-            </div>
+                    </p>
 
-            <!-- Message -->
-
-            <div class="field">
-
-                <label>
-
-                    Message for the Couple
-
-                </label>
-
-                <textarea
-                    id="message"
-                    rows="4"
-                    placeholder="Optional"></textarea>
+                </div>
 
             </div>
 
-            <!-- Submit -->
+            <!-- ======================
+                 SUBMIT
+            ======================= -->
 
             <button
                 id="submitButton"
@@ -273,66 +304,128 @@
 
         </form>
 
-        <!-- Success Screen -->
+        <!-- ==========================
+             SUCCESS SCREEN
+        =========================== -->
 
         <div
             id="successScreen"
             class="hidden">
 
-            <div class="heart">
+            <div class="success-content">
 
-                ♥
+                <div class="success-heart">
+
+                    ❤
+
+                </div>
+
+                <h2>
+
+                    Thank You!
+
+                </h2>
+
+                <p id="successText">
+
+                    Your RSVP has been received.
+
+                </p>
 
             </div>
 
-            <h2>
+        </div>
 
-                Thank You!
+        <!-- ==========================
+             VERIFICATION SCREEN
+        =========================== -->
 
-            </h2>
+        <div
+            id="verificationScreen"
+            class="hidden">
 
-            <p id="successText">
+            <div class="verification-content">
 
-                Your RSVP has been received.
+                <div class="verification-icon">
 
-            </p>
+                    ✨
+
+                </div>
+
+                <h2>
+
+                    Thank You!
+
+                </h2>
+
+                <p>
+
+                    We weren't able to automatically
+                    match your name with our guest list
+                    just yet.
+
+                </p>
+
+                <p>
+
+                    No worries at all! ❤️
+
+                </p>
+
+                <p>
+
+                    Please send us a quick message and
+                    we'll gladly verify your invitation.
+
+                </p>
+
+            </div>
 
         </div>
 
-    </main>
+    </div>
 
-    <!-- Deadline Card -->
+</div>
 
-    <div class="deadline-card">
+<!-- ==========================
+     RSVP DEADLINE
+=========================== -->
+
+<div class="deadline-wrapper">
+
+    <div class="deadline-top">
 
         Kindly respond on or before
 
-        <strong>
+    </div>
 
-            JULY 20, 2026
+    <div class="deadline-date">
 
-        </strong>
+        July 20, 2026
 
     </div>
 
-    <!-- Loading Overlay -->
+</div>
 
-    <div
-        id="loadingOverlay"
-        class="hidden">
+<!-- ==========================
+     LOADING OVERLAY
+=========================== -->
 
-        <div class="loader"></div>
+<div
+    id="loadingOverlay"
+    class="hidden">
 
-        <p>
+    <div class="loader"></div>
 
-            Saving your RSVP...
+    <p>
 
-        </p>
+        Saving your RSVP...
 
-    </div>
+    </p>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 
 </body>
-
 </html>
