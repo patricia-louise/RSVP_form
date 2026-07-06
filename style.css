@@ -639,11 +639,23 @@ textarea:focus{
 
     left:auto;
 
-    text-align:center;
+    width:360px;
 
     color:white;
 
     z-index:20;
+
+    padding:18px 22px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.30);
+
+    background:rgba(45,12,14,.72);
+
+    backdrop-filter:blur(8px);
+
+    -webkit-backdrop-filter:blur(8px);
 
     animation:fadeIn 1s ease;
 
