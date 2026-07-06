@@ -1,70 +1,52 @@
 /* =====================================================
-   Wedding RSVP v3.2 Final
-   Part A
+   Wedding RSVP v4.0
+   Designed for Patricia & Kel ❤️
 ===================================================== */
+
+/* =====================================================
+   GOOGLE FONTS
+===================================================== */
+
+/*
+Add this to index.html if not already present:
+
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Cinzel:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+*/
+
 
 /* =====================================================
    RESET
 ===================================================== */
 
 *{
+
     margin:0;
     padding:0;
     box-sizing:border-box;
-}
-
-/* =====================================================
-   THEME
-===================================================== */
-
-:root{
-
-    --primary:#9e2d2d;
-    --primary-dark:#842525;
-    --primary-light:#bb4a4a;
-
-    --text:#5f4747;
-    --text-light:#867070;
-
-    --glass:rgba(255,255,255,.68);
-
-    --border:rgba(140,110,110,.18);
-
-    --shadow:
-        0 24px 60px rgba(0,0,0,.18);
-
-    --shadow-dropdown:
-        0 18px 45px rgba(0,0,0,.16);
-
-    --radius:16px;
 
 }
 
-/* =====================================================
-   PAGE
-===================================================== */
+html,
+body{
 
-html{
-
+    width:100%;
     min-height:100%;
 
 }
 
 body{
 
-    min-height:100vh;
-
     font-family:"Lato",sans-serif;
 
-    color:var(--text);
+    color:#ffffff;
 
     background-image:url("assets/bg-desktop.png");
 
-    background-repeat:no-repeat;
+    background-size:cover;
 
     background-position:center;
 
-    background-size:cover;
+    background-repeat:no-repeat;
 
     background-attachment:fixed;
 
@@ -73,7 +55,7 @@ body{
 }
 
 /* =====================================================
-   OVERLAY
+   BACKGROUND OVERLAY
 ===================================================== */
 
 .background-overlay{
@@ -82,7 +64,7 @@ body{
 
     inset:0;
 
-    background:rgba(255,255,255,.05);
+    background:rgba(25,0,0,.08);
 
     backdrop-filter:blur(.5px);
 
@@ -98,41 +80,47 @@ body{
 
     position:relative;
 
-    width:540px;
+    width:525px;
 
-    margin-left:40px;
+    margin-left:42px;
 
-    margin-top:45px;
+    margin-top:60px;
 
-    z-index:10;
+    padding-top:35px;
+
+    padding-bottom:35px;
+
+    z-index:5;
 
 }
 
 /* =====================================================
-   CARD
+   RSVP CARD
 ===================================================== */
 
 .card{
 
     position:relative;
 
-    padding:95px 38px 40px;
+    padding:
 
-    background:var(--glass);
+        82px
+        34px
+        36px;
 
-    border-radius:22px;
+    border:1px solid rgba(255,255,255,.24);
 
-    border:1px solid rgba(255,255,255,.55);
+    border-radius:8px;
 
-    backdrop-filter:blur(18px);
+    background:rgba(35,10,12,.70);
 
-    -webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(10px);
 
-    box-shadow:var(--shadow);
+    -webkit-backdrop-filter:blur(10px);
 
-    transition:
+    box-shadow:
 
-        all .45s cubic-bezier(.4,0,.2,1);
+        0 14px 45px rgba(0,0,0,.40);
 
 }
 
@@ -142,7 +130,13 @@ body{
 
 .logo-wrapper{
 
-    position:relative;
+    position:absolute;
+
+    top:-54px;
+
+    left:50%;
+
+    transform:translateX(-50%);
 
     display:flex;
 
@@ -150,49 +144,53 @@ body{
 
     align-items:center;
 
-    margin-top:-95px;
-
-    margin-bottom:28px;
+    width:320px;
 
     pointer-events:none;
 
+    z-index:20;
+
 }
+
+/* RSVP */
 
 .rsvp-logo{
 
     position:relative;
 
-    width:275px;
+    width:255px;
 
-    z-index:5;
+    z-index:3;
 
 }
+
+/* Wax Seal */
 
 .wax-seal{
 
     position:absolute;
 
-    width:145px;
+    width:128px;
 
-    right:calc(50% - 132px);
+    left:188px;
 
     top:50%;
 
     transform:translateY(-50%);
 
-    z-index:4;
+    z-index:2;
 
 }
 
 /* =====================================================
-   FIELDS
+   FORM FIELDS
 ===================================================== */
 
 .field{
 
     position:relative;
 
-    margin-bottom:28px;
+    margin-bottom:24px;
 
 }
 
@@ -200,21 +198,23 @@ body{
 
     display:block;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
 
-    font-family:"Cormorant Garamond",serif;
+    font-family:"EB Garamond",serif;
 
-    font-size:31px;
+    font-size:18px;
 
-    font-weight:600;
+    font-weight:500;
 
-    color:#6b4a4a;
+    letter-spacing:.4px;
+
+    color:#f6f0ee;
 
 }
 
 .field span{
 
-    color:var(--primary);
+    color:#d87a7a;
 
 }
 
@@ -227,36 +227,32 @@ textarea{
 
     width:100%;
 
-    padding:15px 18px;
-
-    border-radius:12px;
-
-    border:1px solid var(--border);
-
-    background:rgba(255,255,255,.82);
-
-    color:var(--text);
-
-    font-size:15px;
+    padding:13px 16px;
 
     font-family:"Lato",sans-serif;
 
-    transition:.30s;
+    font-size:15px;
 
-}
+    color:#ffffff;
 
-textarea{
+    background:rgba(255,255,255,.05);
 
-    resize:vertical;
+    border:1px solid rgba(255,255,255,.35);
 
-    min-height:120px;
+    border-radius:8px;
+
+    transition:
+
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
 
 }
 
 input::placeholder,
 textarea::placeholder{
 
-    color:#9b8a8a;
+    color:rgba(255,255,255,.45);
 
 }
 
@@ -265,11 +261,31 @@ textarea:focus{
 
     outline:none;
 
-    border-color:var(--primary);
+    background:rgba(255,255,255,.08);
+
+    border-color:#c86d6d;
 
     box-shadow:
 
-        0 0 18px rgba(158,45,45,.12);
+        0 0 12px rgba(200,109,109,.20);
+
+}
+
+/* one-line dietary restrictions */
+
+#diet{
+
+    height:48px;
+
+}
+
+/* keep message box taller */
+
+#message{
+
+    min-height:110px;
+
+    resize:vertical;
 
 }
 
@@ -281,7 +297,7 @@ textarea:focus{
 
     display:flex;
 
-    gap:15px;
+    gap:14px;
 
 }
 
@@ -289,17 +305,17 @@ textarea:focus{
 
     flex:1;
 
-    padding:15px;
-
-    border-radius:12px;
-
-    border:1px solid rgba(120,90,90,.18);
-
-    background:white;
-
-    color:#6a5050;
+    padding:13px;
 
     cursor:pointer;
+
+    border-radius:8px;
+
+    border:1px solid rgba(255,255,255,.18);
+
+    background:rgba(255,255,255,.08);
+
+    color:#ffffff;
 
     font-family:"Lato",sans-serif;
 
@@ -311,7 +327,7 @@ textarea:focus{
 
 .choice-button:hover{
 
-    background:#f6ece8;
+    background:rgba(180,35,45,.45);
 
     transform:translateY(-2px);
 
@@ -319,35 +335,33 @@ textarea:focus{
 
 .choice-button.active{
 
-    background:var(--primary);
+    background:#981b23;
 
-    color:white;
-
-    border-color:var(--primary);
+    border-color:#981b23;
 
 }
 
 /* =====================================================
-   SUBMIT
+   SUBMIT BUTTON
 ===================================================== */
 
 #submitButton{
 
     width:100%;
 
-    margin-top:15px;
+    margin-top:18px;
 
-    padding:16px;
+    padding:15px;
+
+    cursor:pointer;
 
     border:none;
 
-    border-radius:12px;
+    border-radius:8px;
 
-    background:var(--primary);
+    background:#9d1e25;
 
     color:white;
-
-    cursor:pointer;
 
     font-family:"Lato",sans-serif;
 
@@ -359,25 +373,25 @@ textarea:focus{
 
     text-transform:uppercase;
 
-    transition:.30s;
+    transition:.25s;
 
 }
 
 #submitButton:hover{
 
-    background:var(--primary-dark);
+    background:#bf232b;
 
-    transform:translateY(-3px);
+    transform:translateY(-2px);
 
     box-shadow:
 
-        0 10px 24px rgba(158,45,45,.30);
+        0 8px 22px rgba(157,30,37,.35);
 
 }
 
 #submitButton:disabled{
 
-    opacity:.6;
+    opacity:.60;
 
     cursor:not-allowed;
 
@@ -399,29 +413,33 @@ textarea:focus{
 
     margin-top:6px;
 
-    background:white;
+    background:rgba(30,8,10,.98);
 
-    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
 
-    border:1px solid rgba(0,0,0,.08);
+    border-radius:8px;
 
     overflow:hidden;
 
-    box-shadow:var(--shadow-dropdown);
+    z-index:9999;
 
-    z-index:999;
+    animation:fadeDropdown .18s ease;
 
-    animation:fadeDropdown .22s ease;
+    box-shadow:
+
+        0 14px 30px rgba(0,0,0,.35);
 
 }
 
 .autocomplete-item{
 
-    padding:14px 18px;
+    padding:13px 16px;
 
     cursor:pointer;
 
-    color:#5c4747;
+    color:#ffffff;
+
+    font-size:15px;
 
     transition:.18s;
 
@@ -429,234 +447,29 @@ textarea:focus{
 
 .autocomplete-item:hover{
 
-    background:#f7efeb;
+    background:#8d1f2d;
 
 }
 
 .autocomplete-item.active{
 
-    background:#f1e3de;
+    background:#b22531;
 
 }
 
 .no-results{
 
-    padding:16px;
+    padding:14px 16px;
 
-    color:#999;
+    color:rgba(255,255,255,.55);
 
     font-style:italic;
 
 }
 
 /* =====================================================
-   DECLINE MESSAGE
+   ACCEPT FIELDS
 ===================================================== */
-
-.decline-box{
-
-    padding:28px;
-
-    margin-bottom:28px;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,.60);
-
-    border:1px solid rgba(120,90,90,.15);
-
-    text-align:center;
-
-    animation:fadeUp .45s ease;
-
-}
-
-.decline-box h3{
-
-    font-family:"Cormorant Garamond",serif;
-
-    font-size:34px;
-
-    font-weight:600;
-
-    color:#6b4a4a;
-
-    margin-bottom:12px;
-
-}
-
-.decline-box p{
-
-    color:#6f5b5b;
-
-    line-height:1.8;
-
-    font-size:16px;
-
-}
-
-/* =====================================================
-   SUCCESS / VERIFICATION
-===================================================== */
-
-.success-content,
-.verification-content{
-
-    padding:55px 28px;
-
-    text-align:center;
-
-    animation:fadeUp .45s ease;
-
-}
-
-.success-heart{
-
-    font-size:64px;
-
-    animation:heartbeat 1.6s infinite;
-
-}
-
-.success-content h2,
-.verification-content h2{
-
-    margin:18px 0;
-
-    font-family:"Cormorant Garamond",serif;
-
-    font-size:44px;
-
-    color:#6b4a4a;
-
-    font-weight:600;
-
-}
-
-.success-content p,
-.verification-content p{
-
-    color:#6f5b5b;
-
-    line-height:1.9;
-
-    font-size:16px;
-
-}
-
-.verification-icon{
-
-    font-size:58px;
-
-}
-
-/* =====================================================
-   DEADLINE
-===================================================== */
-
-.deadline-wrapper{
-
-    position:relative;
-
-    margin:40px auto 15px;
-
-    text-align:center;
-
-    animation:fadeIn 1s ease;
-
-}
-
-.deadline-top{
-
-    font-family:"Cormorant Garamond",serif;
-
-    font-size:22px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    color:#6b4a4a;
-
-}
-
-.deadline-date{
-
-    margin-top:8px;
-
-    font-family:"Cinzel",serif;
-
-    font-size:34px;
-
-    letter-spacing:.20em;
-
-    color:var(--primary);
-
-}
-
-/* =====================================================
-   LOADING
-===================================================== */
-
-#loadingOverlay{
-
-    position:fixed;
-
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    flex-direction:column;
-
-    background:rgba(255,255,255,.55);
-
-    backdrop-filter:blur(5px);
-
-    z-index:99999;
-
-}
-
-.loader{
-
-    width:60px;
-
-    height:60px;
-
-    border-radius:50%;
-
-    border:4px solid rgba(158,45,45,.20);
-
-    border-top-color:var(--primary);
-
-    animation:spin .8s linear infinite;
-
-}
-
-#loadingOverlay p{
-
-    margin-top:18px;
-
-    font-size:15px;
-
-    color:#6b4a4a;
-
-    letter-spacing:.08em;
-
-}
-
-/* =====================================================
-   UTILITIES
-===================================================== */
-
-.hidden{
-
-    display:none !important;
-
-}
 
 #acceptFields{
 
@@ -664,257 +477,43 @@ textarea:focus{
 
     transition:
 
-        all .35s ease;
+        max-height .35s ease,
+        opacity .35s ease;
 
 }
 
 /* =====================================================
-   ANIMATIONS
+   FORM ANIMATION
 ===================================================== */
-
-@keyframes spin{
-
-    from{
-
-        transform:rotate(0deg);
-
-    }
-
-    to{
-
-        transform:rotate(360deg);
-
-    }
-
-}
-
-@keyframes fadeDropdown{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(-8px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@keyframes fadeUp{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(18px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@keyframes fadeIn{
-
-    from{
-
-        opacity:0;
-
-    }
-
-    to{
-
-        opacity:1;
-
-    }
-
-}
-
-@keyframes heartbeat{
-
-    0%{
-
-        transform:scale(1);
-
-    }
-
-    25%{
-
-        transform:scale(1.08);
-
-    }
-
-    45%{
-
-        transform:scale(.98);
-
-    }
-
-    60%{
-
-        transform:scale(1.10);
-
-    }
-
-    100%{
-
-        transform:scale(1);
-
-    }
-
-}
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width:900px){
-
-body{
-
-    background-image:url("assets/bg-mobile.png");
-
-    background-repeat:repeat-y;
-
-    background-size:100% auto;
-
-    background-position:top center;
-
-    background-attachment:scroll;
-
-}
-
-.rsvp-wrapper{
-
-    width:92%;
-
-    max-width:560px;
-
-    margin:120px auto 40px;
-
-}
 
 .card{
 
-    padding:
+    animation:
 
-        95px
-        24px
-        30px;
-
-    border-radius:20px;
+        cardAppear .8s ease;
 
 }
 
-.logo-wrapper{
+@keyframes cardAppear{
 
-    margin-top:-92px;
+    from{
 
-    margin-bottom:20px;
+        opacity:0;
 
-}
+        transform:
 
-.rsvp-logo{
+            translateY(18px);
 
-    width:240px;
+    }
 
-}
+    to{
 
-.wax-seal{
+        opacity:1;
 
-    width:128px;
+        transform:
 
-    right:calc(50% - 116px);
+            translateY(0);
 
-}
-
-.field label{
-
-    font-size:28px;
-
-}
-
-.button-group{
-
-    flex-direction:column;
-
-}
-
-.deadline-wrapper{
-
-    margin-top:35px;
-
-}
-
-.deadline-top{
-
-    font-size:18px;
-
-}
-
-.deadline-date{
-
-    font-size:28px;
-
-}
-
-.success-content h2,
-.verification-content h2{
-
-    font-size:34px;
-
-}
-
-}
-
-/* =====================================================
-   LARGE DESKTOP
-===================================================== */
-
-@media (min-width:1600px){
-
-.rsvp-wrapper{
-
-    margin-left:70px;
-
-    margin-top:60px;
-
-    transform:scale(1.05);
-
-    transform-origin:top left;
-
-}
-
-}
-
-/* =====================================================
-   ULTRA WIDE
-===================================================== */
-
-@media (min-width:2200px){
-
-.rsvp-wrapper{
-
-    transform:scale(1.12);
-
-    transform-origin:top left;
-
-    margin-left:100px;
-
-}
+    }
 
 }
