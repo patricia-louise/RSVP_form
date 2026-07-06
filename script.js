@@ -7,7 +7,7 @@
  CONFIGURATION
 ****************************************************************/
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-pMd8LCJQAQV_4ofv2SdKybBEF0OmbhO7r53qvBhjG14UIWkKJoLTFj93dsDr-l4/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5rNRi72JPB9YWSWVeIV-jywbtsb2gop9AK1dNNBJ-Ew27cMslbtgitb545tRSGElc/exec";
 
 /***************************************************************
  ELEMENTS
