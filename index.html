@@ -1,426 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wedding RSVP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Wedding RSVP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png">
 
-<style>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
-body{
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap"
+        rel="stylesheet">
 
-    font-family:'Poppins',sans-serif;
-
-    background:linear-gradient(135deg,#f7f4f5,#ece8eb);
-
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:40px;
-
-}
-
-.container{
-
-    width:100%;
-    max-width:700px;
-
-    background:#fff;
-
-    border-radius:20px;
-
-    padding:45px;
-
-    box-shadow:0 15px 45px rgba(0,0,0,.12);
-
-}
-
-h1{
-
-    font-family:'Cormorant Garamond',serif;
-
-    text-align:center;
-
-    font-size:52px;
-
-    color:#b07b8f;
-
-    margin-bottom:10px;
-
-}
-
-.subtitle{
-
-    text-align:center;
-
-    color:#777;
-
-    margin-bottom:35px;
-
-}
-
-.form-group{
-
-    margin-bottom:22px;
-
-}
-
-label{
-
-    display:block;
-
-    margin-bottom:8px;
-
-    font-weight:500;
-
-    color:#555;
-
-}
-
-input,
-textarea,
-select{
-
-    width:100%;
-
-    padding:14px;
-
-    border:1px solid #ddd;
-
-    border-radius:10px;
-
-    font-size:15px;
-
-    font-family:inherit;
-
-    transition:.2s;
-
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-
-    outline:none;
-
-    border-color:#d8a8b9;
-
-    box-shadow:0 0 0 4px rgba(216,168,185,.2);
-
-}
-
-textarea{
-
-    resize:vertical;
-
-    min-height:120px;
-
-}
-
-.radio-group{
-
-    display:flex;
-
-    gap:25px;
-
-    margin-top:10px;
-
-}
-
-.radio-group label{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    font-weight:400;
-
-    cursor:pointer;
-
-}
-
-.radio-group input{
-
-    width:auto;
-
-}
-
-button{
-
-    width:100%;
-
-    padding:16px;
-
-    background:#b07b8f;
-
-    color:white;
-
-    border:none;
-
-    border-radius:12px;
-
-    font-size:16px;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-button:hover{
-
-    background:#9b667a;
-
-}
-
-#success{
-
-    display:none;
-
-    text-align:center;
-
-    margin-top:25px;
-
-    color:#3d8a53;
-
-    font-weight:600;
-
-}
-
-@media(max-width:600px){
-
-.container{
-
-padding:30px;
-
-}
-
-h1{
-
-font-size:40px;
-
-}
-
-.radio-group{
-
-flex-direction:column;
-
-gap:12px;
-
-}
-
-}
-
-</style>
+    <!-- Styles -->
+    <link rel="stylesheet"
+        href="style.css">
 
 </head>
 
 <body>
 
-<div class="container">
+    <!-- Dark Overlay -->
 
-<h1>Wedding RSVP</h1>
+    <div class="page-overlay"></div>
 
-<p class="subtitle">
-Please let us know if you'll be celebrating with us.
-</p>
+    <!-- RSVP Card -->
 
-<form id="rsvpForm">
+    <main class="rsvp-container">
 
-<div class="form-group">
+        <!-- RSVP Header -->
 
-<label for="name">
-Name <span style="color:#c55;">*</span>
-</label>
+        <div class="rsvp-header">
 
-<input
-type="text"
-id="name"
-required>
+            <img
+                src="assets/logo-rsvp.png"
+                class="logo"
+                alt="RSVP">
 
-</div>
+            <img
+                src="assets/wax-seal.png"
+                class="seal"
+                alt="Wax Seal">
 
-<div class="form-group">
+        </div>
 
-<label for="email">
-Email Address <span style="color:#c55;">*</span>
-</label>
+        <!-- Intro -->
 
-<input
-type="email"
-id="email"
-required>
+        <p class="intro">
 
-</div>
+            We can't wait to celebrate with you!
 
-<div class="form-group">
+            Kindly respond on or before
 
-<label for="attendance">
-Will you be attending? <span style="color:#c55;">*</span>
-</label>
+            <strong>July 20, 2026</strong>
 
-<select id="attendance" required>
+        </p>
 
-<option value="">Please select</option>
-<option>Joyfully Accept</option>
-<option>Regretfully Decline</option>
+        <!-- Form -->
 
-</select>
+        <form id="rsvpForm">
 
-</div>
+            <!-- Name -->
 
-<div class="form-group">
+            <div class="field">
 
-<label for="diet">
-Do you have any food allergies or dietary restrictions? If yes, please specify. <span style="color:#c55;">*</span>
-</label>
+                <label>
 
-<textarea
-id="diet"
-required
-placeholder="If none, please type 'None'."></textarea>
+                    Name
+                    <span>*</span>
 
-</div>
+                </label>
 
-<div class="form-group">
+                <input
+                    type="text"
+                    id="name"
+                    required>
 
-<label>
-Will you need parking? <span style="color:#c55;">*</span>
-</label>
+            </div>
 
-<div class="radio-group">
+            <!-- Email -->
 
-<label>
-<input
-type="radio"
-name="parking"
-value="Yes"
-required>
-Yes
-</label>
+            <div class="field">
 
-<label>
-<input
-type="radio"
-name="parking"
-value="No">
-No
-</label>
+                <label>
 
-</div>
+                    Email Address
+                    <span>*</span>
 
-</div>
+                </label>
 
-<div class="form-group">
+                <input
+                    type="email"
+                    id="email"
+                    required>
 
-<label for="song">
-Song Request (Optional)
-</label>
+            </div>
 
-<input
-type="text"
-id="song"
-placeholder="Your favorite dance song">
+            <!-- Attendance -->
 
-</div>
+            <div class="field">
 
-<div class="form-group">
+                <label>
 
-<label for="message">
-Message for the Couple (Optional)
-</label>
+                    Will you be attending?
+                    <span>*</span>
 
-<textarea
-id="message"
-placeholder="Leave us a message..."></textarea>
+                </label>
 
-</div>
+                <div class="attendance-buttons">
 
-<button type="submit">
-Submit RSVP
-</button>
+                    <button
+                        type="button"
+                        class="attendance-btn"
+                        data-value="Joyfully Accept">
 
-</form>
+                        Joyfully Accept
 
-<div id="success">
-🎉 Thank you! Your RSVP has been received.
-</div>
+                    </button>
 
-</div>
+                    <button
+                        type="button"
+                        class="attendance-btn"
+                        data-value="Regretfully Decline">
 
-<script>
+                        Regretfully Decline
 
-const form = document.getElementById("rsvpForm");
+                    </button>
 
-form.addEventListener("submit", async function(e){
+                </div>
 
-e.preventDefault();
+                <input
+                    type="hidden"
+                    id="attendance"
+                    required>
 
-const parking = document.querySelector('input[name="parking"]:checked').value;
+            </div>
 
-const data = {
+            <!-- CONDITIONAL AREA -->
 
-name: document.getElementById("name").value,
+            <div id="acceptFields">
 
-email: document.getElementById("email").value,
+                <!-- Food -->
 
-attendance: document.getElementById("attendance").value,
+                <div class="field">
 
-diet: document.getElementById("diet").value,
+                    <label>
 
-parking: parking,
+                        Do you have any food allergies or dietary restrictions?
 
-song: document.getElementById("song").value,
+                        <span>*</span>
 
-message: document.getElementById("message").value
+                    </label>
 
-};
+                    <textarea
+                        id="diet"
+                        rows="3"
+                        placeholder="If none, simply type 'None'."></textarea>
 
-try{
+                </div>
 
-await fetch("https://script.google.com/macros/s/AKfycbxFKip6tu0Qx5h2qX_lyBznJ5DrLcvCdHZVN0xhiguTx8GESDDO0nOYNLHTeKzEj12E/exec",{
+                <!-- Parking -->
 
-method:"POST",
+                <div class="field">
 
-headers:{
-"Content-Type":"application/json"
-},
+                    <label>
 
-body:JSON.stringify(data)
+                        Will you need parking?
 
-});
+                        <span>*</span>
 
-form.reset();
+                    </label>
 
-document.getElementById("success").style.display="block";
+                    <div class="parking-buttons">
 
-}
-catch(error){
+                        <button
+                            type="button"
+                            class="parking-btn"
+                            data-value="Yes">
 
-alert("Something went wrong. Please try again.");
+                            Yes
 
-}
+                        </button>
 
-});
+                        <button
+                            type="button"
+                            class="parking-btn"
+                            data-value="No">
 
-</script>
+                            No
+
+                        </button>
+
+                    </div>
+
+                    <input
+                        type="hidden"
+                        id="parking">
+
+                </div>
+
+                <!-- Song -->
+
+                <div class="field">
+
+                    <label>
+
+                        Song Request
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="song"
+                        placeholder="Optional">
+
+                </div>
+
+            </div>
+
+            <!-- Decline Message -->
+
+            <div
+                id="declineMessage"
+                class="hidden">
+
+                <p>
+
+                    We're so sorry you won't be able to celebrate with us.
+
+                    Thank you for letting us know.
+
+                    ❤️
+
+                </p>
+
+            </div>
+
+            <!-- Message -->
+
+            <div class="field">
+
+                <label>
+
+                    Message for the Couple
+
+                </label>
+
+                <textarea
+                    id="message"
+                    rows="4"
+                    placeholder="Optional"></textarea>
+
+            </div>
+
+            <!-- Submit -->
+
+            <button
+                id="submitButton"
+                type="submit">
+
+                Submit RSVP
+
+            </button>
+
+        </form>
+
+        <!-- Success Screen -->
+
+        <div
+            id="successScreen"
+            class="hidden">
+
+            <div class="heart">
+
+                ♥
+
+            </div>
+
+            <h2>
+
+                Thank You!
+
+            </h2>
+
+            <p id="successText">
+
+                Your RSVP has been received.
+
+            </p>
+
+        </div>
+
+    </main>
+
+    <!-- Deadline Card -->
+
+    <div class="deadline-card">
+
+        Kindly respond on or before
+
+        <strong>
+
+            JULY 20, 2026
+
+        </strong>
+
+    </div>
+
+    <!-- Loading Overlay -->
+
+    <div
+        id="loadingOverlay"
+        class="hidden">
+
+        <div class="loader"></div>
+
+        <p>
+
+            Saving your RSVP...
+
+        </p>
+
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
