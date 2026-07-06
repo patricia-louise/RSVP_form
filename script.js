@@ -1,5 +1,5 @@
 /*****************************************************************
- Wedding RSVP v3.1
+ Wedding RSVP v4.2
 *****************************************************************/
 
 /***************************************************************
@@ -7,7 +7,7 @@
 ****************************************************************/
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyak9lHK36gBg_0zC-megNjc4At4_2aIEzkdgke7v3np6kRZ36wAcfCTynBeWZiswGM/exec";
+"https://script.google.com/macros/s/AKfycbyEarCvBfvOJT0ga4GDezGqKzrgHDoZibL0cW7_Gw5jGWMH8hrASLLjXq8GGFQ3v1Q/exec";
 
 /***************************************************************
  ELEMENTS
@@ -58,6 +58,22 @@ const successText =
 document.getElementById("successText");
 
 /***************************************************************
+ LIVE VERIFICATION MESSAGE
+****************************************************************/
+
+const verificationMessage =
+document.createElement("div");
+
+verificationMessage.id = "verificationMessage";
+
+verificationMessage.className =
+"verification-message hidden";
+
+nameInput.parentNode.appendChild(
+verificationMessage
+);
+
+/***************************************************************
  STATE
 ****************************************************************/
 
@@ -66,6 +82,8 @@ let guestList = [];
 let filteredGuests = [];
 
 let selectedIndex = -1;
+
+let guestVerified = false;
 
 let pageReady = false;
 
@@ -93,27 +111,32 @@ async function loadGuestList(){
 
     try{
 
-        const response = await fetch(
+        const response =
+        await fetch(
 
-            SCRIPT_URL + "?action=guests"
+            SCRIPT_URL +
+            "?action=guests"
 
         );
 
         if(!response.ok){
 
-            throw new Error("Unable to load guest list.");
+            throw new Error(
+            "Unable to load guest list."
+            );
 
         }
 
-        guestList = await response.json();
+        guestList =
+        await response.json();
 
         console.log(
 
-            "Guest list loaded:",
+            "Loaded",
 
             guestList.length,
 
-            "guests"
+            "guests."
 
         );
 
@@ -123,7 +146,7 @@ async function loadGuestList(){
 
         console.error(error);
 
-        guestList = [];
+        guestList=[];
 
     }
 
@@ -193,11 +216,18 @@ function hideDecline(){
 
 function filterGuests(query){
 
-    const search = normalize(query);
+    const search =
+    normalize(query);
 
-    if(search.length < 3){
+    guestVerified=false;
 
-        filteredGuests = [];
+    verificationMessage.classList.add(
+    "hidden"
+    );
+
+    if(search.length<3){
+
+        filteredGuests=[];
 
         drawSuggestions();
 
@@ -207,43 +237,53 @@ function filterGuests(query){
 
     filteredGuests = guestList
 
-        .filter(name=>{
+    .filter(name=>
 
-            return normalize(name).includes(search);
+        normalize(name)
 
-        })
+        .includes(search)
 
-        .sort((a,b)=>{
+    )
 
-            const aStarts = normalize(a).startsWith(search);
-            const bStarts = normalize(b).startsWith(search);
+    .sort((a,b)=>{
 
-            if(aStarts && !bStarts) return -1;
-            if(!aStarts && bStarts) return 1;
+        const aa=
+        normalize(a)
+        .startsWith(search);
 
-            return a.localeCompare(b);
+        const bb=
+        normalize(b)
+        .startsWith(search);
 
-        })
+        if(aa&&!bb) return -1;
 
-        .slice(0,8);
+        if(!aa&&bb) return 1;
+
+        return a.localeCompare(b);
+
+    })
+
+    .slice(0,8);
 
     drawSuggestions();
 
 }
 
 /***************************************************************
- DRAW SUGGESTIONS
+ DRAW AUTOCOMPLETE
 ****************************************************************/
 
 function drawSuggestions(){
 
-    autocomplete.innerHTML = "";
+    autocomplete.innerHTML="";
 
-    selectedIndex = -1;
+    selectedIndex=-1;
 
     if(filteredGuests.length===0){
 
-        autocomplete.classList.add("hidden");
+        autocomplete.classList.add(
+        "hidden"
+        );
 
         return;
 
@@ -251,15 +291,19 @@ function drawSuggestions(){
 
     filteredGuests.forEach((guest,index)=>{
 
-        const item = document.createElement("div");
+        const item=
+        document.createElement("div");
 
-        item.className = "autocomplete-item";
+        item.className=
+        "autocomplete-item";
 
-        item.textContent = guest;
+        item.textContent=guest;
 
-        item.addEventListener("mousedown",()=>{
+        item.addEventListener(
+        "mousedown",
+        ()=>{
 
-            selectGuest(index);
+            chooseGuest(index);
 
         });
 
@@ -267,21 +311,39 @@ function drawSuggestions(){
 
     });
 
-    autocomplete.classList.remove("hidden");
+    autocomplete.classList.remove(
+    "hidden"
+    );
 
 }
 
 /***************************************************************
- SELECT GUEST
+ CHOOSE GUEST
 ****************************************************************/
 
-function selectGuest(index){
+function chooseGuest(index){
 
-    nameInput.value = filteredGuests[index];
+    const guest=
+    filteredGuests[index];
 
-    autocomplete.classList.add("hidden");
+    nameInput.value=guest;
 
-    selectedIndex = -1;
+    guestVerified=true;
+
+    autocomplete.classList.add(
+    "hidden"
+    );
+
+    verificationMessage.classList.remove(
+    "hidden"
+    );
+
+    verificationMessage.className =
+    "verification-message verified";
+
+    verificationMessage.innerHTML=
+
+    "❤️ We found your invitation! We can't wait to celebrate with you.";
 
 }
 
@@ -289,104 +351,37 @@ function selectGuest(index){
  NAME INPUT
 ****************************************************************/
 
-nameInput.addEventListener("input",()=>{
+nameInput.addEventListener(
+
+"input",
+
+()=>{
 
     filterGuests(nameInput.value);
 
 });
 
-/***************************************************************
- KEYBOARD NAVIGATION
-****************************************************************/
+document.addEventListener(
 
-nameInput.addEventListener("keydown",(event)=>{
+"click",
 
-    const items =
-    autocomplete.querySelectorAll(".autocomplete-item");
-
-    if(items.length===0) return;
-
-    switch(event.key){
-
-        case "ArrowDown":
-
-            event.preventDefault();
-
-            selectedIndex++;
-
-            if(selectedIndex>=items.length){
-
-                selectedIndex=0;
-
-            }
-
-            break;
-
-        case "ArrowUp":
-
-            event.preventDefault();
-
-            selectedIndex--;
-
-            if(selectedIndex<0){
-
-                selectedIndex=items.length-1;
-
-            }
-
-            break;
-
-        case "Enter":
-
-            if(selectedIndex>=0){
-
-                event.preventDefault();
-
-                selectGuest(selectedIndex);
-
-            }
-
-            return;
-
-        case "Escape":
-
-            autocomplete.classList.add("hidden");
-
-            return;
-
-    }
-
-    items.forEach(item=>{
-
-        item.classList.remove("active");
-
-    });
-
-    if(selectedIndex>=0){
-
-        items[selectedIndex]
-
-        .classList.add("active");
-
-    }
-
-});
-
-/***************************************************************
- CLOSE AUTOCOMPLETE
-****************************************************************/
-
-document.addEventListener("click",(event)=>{
+(event)=>{
 
     if(
 
-        !event.target.closest("#name") &&
+        !event.target.closest("#name")
 
-        !event.target.closest("#autocomplete")
+        &&
+
+        !event.target.closest(
+        "#autocomplete"
+        )
 
     ){
 
-        autocomplete.classList.add("hidden");
+        autocomplete.classList.add(
+        "hidden"
+        );
 
     }
 
@@ -404,7 +399,8 @@ attendanceButtons.forEach(button=>{
 
         activateButton(button);
 
-        attendanceInput.value = button.dataset.value;
+        attendanceInput.value =
+        button.dataset.value;
 
         if(button.dataset.value==="Joyfully Accept"){
 
@@ -442,7 +438,8 @@ parkingButtons.forEach(button=>{
 
         activateButton(button);
 
-        parkingInput.value = button.dataset.value;
+        parkingInput.value =
+        button.dataset.value;
 
     });
 
@@ -456,7 +453,7 @@ function validateForm(){
 
     if(nameInput.value.trim()===""){
 
-        showError("Please enter your name.");
+        alert("Please enter your name.");
 
         return false;
 
@@ -464,7 +461,7 @@ function validateForm(){
 
     if(emailInput.value.trim()===""){
 
-        showError("Please enter your email address.");
+        alert("Please enter your email address.");
 
         return false;
 
@@ -472,7 +469,7 @@ function validateForm(){
 
     if(attendanceInput.value===""){
 
-        showError("Please select whether you'll be attending.");
+        alert("Please tell us whether you'll be attending.");
 
         return false;
 
@@ -482,10 +479,8 @@ function validateForm(){
 
         if(dietInput.value.trim()===""){
 
-            showError(
-
-            "Please tell us your dietary restrictions. If you have none, simply type 'None'."
-
+            alert(
+            "Please tell us your dietary restrictions. If none, simply type 'None'."
             );
 
             return false;
@@ -494,10 +489,8 @@ function validateForm(){
 
         if(parkingInput.value===""){
 
-            showError(
-
+            alert(
             "Please let us know whether you'll need parking."
-
             );
 
             return false;
@@ -511,14 +504,295 @@ function validateForm(){
 }
 
 /***************************************************************
- SIMPLE ERROR MESSAGE
+ SUCCESS
 ****************************************************************/
 
-function showError(message){
+function showSuccess(attendance){
 
-    alert(message);
+    form.style.display="none";
+
+    successScreen.classList.remove("hidden");
+
+    if(attendance==="Joyfully Accept"){
+
+        successText.innerHTML=
+
+        "❤️ Thank you!<br><br>We're absolutely thrilled that you'll be celebrating with us. We can't wait to see you on our special day!";
+
+    }
+
+    else{
+
+        successText.innerHTML=
+
+        "Thank you for letting us know. We'll truly miss celebrating with you, but we sincerely appreciate your response and your warm wishes. ❤️";
+
+    }
 
 }
+
+/***************************************************************
+ VERIFICATION SCREEN
+****************************************************************/
+
+function showVerification(){
+
+    form.style.display="none";
+
+    verificationScreen.classList.remove("hidden");
+
+}
+
+/***************************************************************
+ SUBMIT
+****************************************************************/
+
+form.addEventListener("submit",async(event)=>{
+
+    event.preventDefault();
+
+    if(!pageReady){
+
+        alert(
+        "Please wait a moment while the guest list finishes loading."
+        );
+
+        return;
+
+    }
+
+    if(!validateForm()){
+
+        return;
+
+    }
+
+    submitButton.disabled=true;
+
+    loadingOverlay.classList.remove("hidden");
+
+    const payload={
+
+        name:nameInput.value.trim(),
+
+        email:emailInput.value.trim(),
+
+        attendance:attendanceInput.value,
+
+        allergies:dietInput.value.trim(),
+
+        parking:parkingInput.value,
+
+        song:songInput.value.trim(),
+
+        message:messageInput.value.trim()
+
+    };
+
+    const formData =
+    new URLSearchParams();
+
+    Object.keys(payload).forEach(key=>{
+
+        formData.append(
+
+            key,
+
+            payload[key]
+
+        );
+
+    });
+
+    try{
+
+        const response =
+        await fetch(
+
+            SCRIPT_URL,
+
+            {
+
+                method:"POST",
+
+                body:formData
+
+            }
+
+        );
+
+        const text =
+        await response.text();
+        
+        console.log(text);
+        
+        const result =
+        JSON.parse(text);
+
+        loadingOverlay.classList.add("hidden");
+
+        submitButton.disabled=false;
+
+        if(!result.success){
+
+            throw new Error(
+
+                result.error ||
+
+                "Unknown server error."
+
+            );
+
+        }
+
+        if(result.status==="verified"){
+
+            showSuccess(
+            payload.attendance
+            );
+
+        }
+
+        else{
+
+            showVerification();
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        loadingOverlay.classList.add("hidden");
+
+        submitButton.disabled=false;
+
+        alert(
+
+            "Unable to submit your RSVP.\n\n"
+
+            + error.message
+
+        );
+
+    }
+
+});
+
+/***************************************************************
+ LIVE VERIFICATION
+****************************************************************/
+
+nameInput.addEventListener("blur",()=>{
+
+    if(
+
+        guestVerified ||
+
+        nameInput.value.trim().length<3
+
+    ){
+
+        return;
+
+    }
+
+    verificationMessage.classList.remove(
+    "hidden"
+    );
+
+    verificationMessage.className =
+    "verification-message unverified";
+
+    verificationMessage.innerHTML=
+
+    "🌸 We couldn't automatically match your name with our guest list. You're still welcome to submit your RSVP, and we'll personally review it before confirming your invitation.";
+
+});
+
+/***************************************************************
+ KEYBOARD NAVIGATION
+****************************************************************/
+
+nameInput.addEventListener("keydown",(event)=>{
+
+    const items =
+    autocomplete.querySelectorAll(".autocomplete-item");
+
+    if(items.length===0){
+
+        return;
+
+    }
+
+    switch(event.key){
+
+        case "ArrowDown":
+
+            event.preventDefault();
+
+            selectedIndex++;
+
+            if(selectedIndex>=items.length){
+
+                selectedIndex=0;
+
+            }
+
+            break;
+
+        case "ArrowUp":
+
+            event.preventDefault();
+
+            selectedIndex--;
+
+            if(selectedIndex<0){
+
+                selectedIndex=
+                items.length-1;
+
+            }
+
+            break;
+
+        case "Enter":
+
+            if(selectedIndex>=0){
+
+                event.preventDefault();
+
+                chooseGuest(selectedIndex);
+
+            }
+
+            break;
+
+        case "Escape":
+
+            autocomplete.classList.add("hidden");
+
+            break;
+
+    }
+
+    items.forEach(item=>{
+
+        item.classList.remove("active");
+
+    });
+
+    if(selectedIndex>=0){
+
+        items[selectedIndex]
+
+        .classList.add("active");
+
+    }
+
+});
 
 /***************************************************************
  RESET FORM
@@ -542,198 +816,17 @@ function resetForm(){
 
     autocomplete.classList.add("hidden");
 
-}
+    verificationMessage.className =
+    "verification-message hidden";
 
-/***************************************************************
- SHOW SUCCESS
-****************************************************************/
+    verificationMessage.innerHTML="";
 
-function showSuccess(attendance){
-
-    form.style.display="none";
-
-    successScreen.classList.remove("hidden");
-
-    if(attendance==="Joyfully Accept"){
-
-        successText.innerHTML =
-
-        "We're absolutely thrilled you'll be celebrating with us! ❤️<br><br>We can't wait to celebrate with you on our special day.";
-
-    }
-
-    else{
-
-        successText.innerHTML =
-
-        "Thank you so much for letting us know. We'll truly miss celebrating with you, but we sincerely appreciate your response and your well wishes. ❤️";
-
-    }
+    guestVerified=false;
 
 }
 
 /***************************************************************
- SHOW VERIFICATION
-****************************************************************/
-
-function showVerification(){
-
-    form.style.display="none";
-
-    verificationScreen.classList.remove("hidden");
-
-}
-
-/***************************************************************
- SUBMIT RSVP
-****************************************************************/
-
-form.addEventListener("submit", async (event)=>{
-
-    event.preventDefault();
-
-    if(!pageReady){
-
-        showError("Please wait a moment while the page finishes loading.");
-
-        return;
-
-    }
-
-    if(!validateForm()) return;
-
-    submitButton.disabled = true;
-
-    loadingOverlay.classList.remove("hidden");
-
-    const payload={
-
-        name:nameInput.value.trim(),
-
-        email:emailInput.value.trim(),
-
-        attendance:attendanceInput.value,
-
-        allergies:dietInput.value.trim(),
-
-        parking:parkingInput.value,
-
-        song:songInput.value.trim(),
-
-        message:messageInput.value.trim()
-
-    };
-
-    try{
-
-        const response = await fetch(
-
-            SCRIPT_URL,
-
-            {
-
-                method:"POST",
-
-                headers:{
-
-                    "Content-Type":"application/json"
-
-                },
-
-                body:JSON.stringify(payload)
-
-            }
-
-        );
-
-        if(!response.ok){
-
-            throw new Error(
-
-                "HTTP " + response.status
-
-            );
-
-        }
-
-        const text = await response.text();
-
-        console.log("Apps Script Response:", text);
-
-        let result;
-
-        try{
-
-            result = JSON.parse(text);
-
-        }
-
-        catch(error){
-
-            throw new Error(
-
-                "Apps Script returned invalid JSON.\n\n"
-
-                + text
-
-            );
-
-        }
-
-        loadingOverlay.classList.add("hidden");
-
-        submitButton.disabled=false;
-
-        if(!result.success){
-
-            throw new Error(
-
-                result.error ||
-
-                "Unknown Apps Script error."
-
-            );
-
-        }
-
-        if(result.status==="verified"){
-
-            showSuccess(payload.attendance);
-
-        }
-
-        else{
-
-            showVerification();
-
-        }
-
-    }
-
-    catch(error){
-
-        loadingOverlay.classList.add("hidden");
-
-        submitButton.disabled=false;
-
-        console.error(error);
-
-        showError(
-
-            "Unable to submit your RSVP.\n\n"
-
-            + error.message +
-
-            "\n\n(Open F12 → Console if you're testing.)"
-
-        );
-
-    }
-
-});
-
-/***************************************************************
- PREVENT ENTER SUBMIT
+ PREVENT ACCIDENTAL ENTER SUBMIT
 ****************************************************************/
 
 document
