@@ -708,7 +708,7 @@ nameInput.addEventListener("blur",()=>{
 
     verificationMessage.innerHTML=
 
-    "🌸 We couldn't automatically match your name with our guest list. You're still welcome to submit your RSVP, and we'll personally review it before confirming your invitation.";
+    "We couldn't automatically match your name with our guest list. You're still welcome to submit your RSVP, and we'll personally review it before confirming your invitation.";
 
 });
 
