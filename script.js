@@ -170,6 +170,18 @@ function normalize(text){
 
 }
 
+function isVerifiedGuest(name){
+
+    const search = normalize(name);
+
+    return guestList.some(guest=>{
+
+        return normalize(guest) === search;
+
+    });
+
+}
+
 function clearButtons(buttons){
 
     buttons.forEach(button=>{
@@ -571,21 +583,26 @@ form.addEventListener("submit",async(event)=>{
 
     loadingOverlay.classList.remove("hidden");
 
-    const payload={
+    const verified =
+    isVerifiedGuest(nameInput.value);
 
-        name:nameInput.value.trim(),
+    const payload = {
 
-        email:emailInput.value.trim(),
+    name: nameInput.value.trim(),
 
-        attendance:attendanceInput.value,
+    email: emailInput.value.trim(),
 
-        allergies:dietInput.value.trim(),
+    attendance: attendanceInput.value,
 
-        parking:parkingInput.value,
+    allergies: dietInput.value.trim(),
 
-        song:songInput.value.trim(),
+    parking: parkingInput.value,
 
-        message:messageInput.value.trim()
+    song: songInput.value.trim(),
+
+    message: messageInput.value.trim(),
+
+    verified: verified
 
     };
 
