@@ -7,7 +7,7 @@
 ****************************************************************/
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyEarCvBfvOJT0ga4GDezGqKzrgHDoZibL0cW7_Gw5jGWMH8hrASLLjXq8GGFQ3v1Q/exec";
+"https://script.google.com/macros/s/AKfycbwPlyIpaPpALxStNKio_SAsAnykgabG1zPXOYIJdIdukHfS9NRndQ88Qcs2Totm3CbL/exec";
 
 /***************************************************************
  ELEMENTS
